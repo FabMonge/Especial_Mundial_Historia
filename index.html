@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Especial: El ADN de la Copa - ECData</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <section id="intro-screen">
+        <div class="gif-overlay"></div>
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc2pxbndnMWp4cTB6Nmh4eXNqbXJ1cWZxdndqeDB4bWp3bDBxeHk5aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKoHXIex1B7wNio/giphy.gif" alt="Fútbol" class="bg-gif" autoplay loop muted playsinline>
+        <div class="intro-content">
+            <h1 class="headline">La pelota rueda por el mundo entero</h1>
+            <h2 class="subheadline">Cada cuatro años, selecciones de todo el planeta se reúnen para competir en la Copa del Mundo. Este es un repaso por una historia que empezó hace 96 años.</h2>
+            <button id="btn-comenzar" class="start-btn">Comenzar el recorrido ↓</button>
+        </div>
+    </section>
+
+    <main id="gsap-pin-container">
+        
+        <div id="map-stage">
+            <div id="map"></div>
+
+            <div id="ui-overlays">
+                <div id="leyenda-dinamica" class="hologram-panel bottom-legend ui-hidden"></div>
+                <div id="panel-extintos" class="hologram-panel center-panel ui-hidden">
+                    <h3>Quedaron en la historia</h3>
+                    <p class="panel-desc">El fútbol conserva el archivo de naciones que ya no existen:</p>
+                    <div class="extintos-list">
+                        <div class="extinto-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Flag_of_Yugoslavia_%281946-1992%29.svg" class="extinto-flag" alt="Yugoslavia">
+                            <div class="extinto-text"><span>Yugoslavia</span><small>8 participaciones</small></div>
+                        </div>
+                        <div class="extinto-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_Czech_Republic.svg" class="extinto-flag" alt="Checoslovaquia">
+                            <div class="extinto-text"><span>Checoslovaquia</span><small>8 participaciones</small></div>
+                        </div>
+                        <div class="extinto-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_the_Soviet_Union.svg" class="extinto-flag" alt="URSS">
+                            <div class="extinto-text"><span>Unión Soviética (URSS)</span><small>7 participaciones</small></div>
+                        </div>
+                        <div class="extinto-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Flag_of_East_Germany.svg" class="extinto-flag" alt="RDA">
+                            <div class="extinto-text"><span>Alemania Democrática</span><small>1 participación</small></div>
+                        </div>
+                        <div class="extinto-item">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Flag_of_Serbia_and_Montenegro.svg" class="extinto-flag" alt="Serbia y Montenegro">
+                            <div class="extinto-text"><span>Serbia y Montenegro</span><small>1 participación</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-mexico" class="hologram-panel side-panel ui-hidden">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Estadio_Azteca_en_2015.jpg/640px-Estadio_Azteca_en_2015.jpg" alt="Estadio Azteca" class="mexico-img">
+                    <h3>Ciudad de México</h3>
+                    <p class="panel-desc">La única ciudad del planeta en albergar dos finales del mundo. Este año no tendrá el encuentro decisivo.</p>
+                    <div class="resultados-box">
+                        <div class="res-item"><strong>1970:</strong> Brasil 4 - 1 Italia</div>
+                        <div class="res-item"><strong>1986:</strong> Argentina 3 - 2 Alemania Fed.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <article id="scroll-texts">
+            
+            <div class="step" data-step="1">
+                <div class="step-card">
+                    <h2>Los Anfitriones</h2>
+                    <p>Desde su primera edición en 1930, 19 países han organizado las 23 Copas del Mundo celebradas hasta ahora. México, uno de los tres anfitriones de este año, es el único país que ha organizado el Mundial tres veces.</p>
+                </div>
+            </div>
+            
+            <div class="step" data-step="2">
+                <div class="step-card">
+                    <h2>El balón cruza fronteras</h2>
+                    <p>Europa es el continente que ha organizado más Mundiales, con 11 torneos. El segundo lugar lo ocupa América con nueve.</p>
+                </div>
+            </div>
+
+            <div class="step" data-step="3">
+                <div class="step-card">
+                    <h2>Un esfuerzo colaborativo</h2>
+                    <p>Por segunda vez en la historia, más de un país organiza el Mundial. Hace más de 20 años, en el 2002, lo hicieron Japón y Corea.</p>
+                </div>
+            </div>
+
+            <div class="step" data-step="4">
+                <div class="step-wrap">
+                    
+                    <div class="step-card">
+                        <h2>Más países, más fútbol</h2>
+                        <p>Desde esta edición, 48 selecciones participan en la Copa del Mundo. Algunas de ellas, como Cabo Verde, Curazao, Jordania y Uzbekistán participarán por primera vez en el evento más importante del balompié.</p>
+                        <p style="margin-top: 15px;">Hasta ahora, solo 77 países del planeta no han participado nunca en el Mundial.</p>
+                    </div>
+                    
+                    <div class="debutantes-box">
+                        <h3>Equipos debutantes</h3>
+                        <div class="debutantes-list">
+                            <div class="deb-item">
+                                <img src="https://flagcdn.com/w40/cv.png" class="deb-flag" alt="Cabo Verde">
+                                <span>Cabo Verde</span>
+                            </div>
+                            <div class="deb-item">
+                                <img src="https://flagcdn.com/w40/cw.png" class="deb-flag" alt="Curazao">
+                                <span>Curazao</span>
+                            </div>
+                            <div class="deb-item">
+                                <img src="https://flagcdn.com/w40/jo.png" class="deb-flag" alt="Jordania">
+                                <span>Jordania</span>
+                            </div>
+                            <div class="deb-item">
+                                <img src="https://flagcdn.com/w40/uz.png" class="deb-flag" alt="Uzbekistán">
+                                <span>Uzbekistán</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="step" data-step="5">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2>Quedaron en la historia</h2>
+                        <p>Pero el fútbol también conserva en su archivo las participaciones de países que ya no existen a causa de los cambios geopolíticos a lo largo del último siglo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="6">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2 style="color: #f1c40f;">La ¿ventaja? de la localía</h2>
+                        <p>En el Mundial, la localía no garantiza el éxito: solo seis de los 19 organizadores del certamen han alzado la copa. El último de ellos fue Francia, en 1998.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="7">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2>Las ciudades que vieron historia</h2>
+                        <p>Entre 1930 y 2022, 166 ciudades de cuatro continentes fueron sedes de los partidos de la Copas del Mundo.<br><br>Este año se sumarán nueve más: Atlanta, Houston, Kansas City, Miami, Nueva Jersey, Filadelfia, Seattle, Toronto y Vancouver.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="8">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2 style="color: #2ecc71;">Historia y legado</h2>
+                        <p>Ciudad de México es la única ciudad del planeta donde se han jugado dos finales del Mundial.<br><br>Este año, en la capital mexicana se disputarán cinco partidos, pero no el encuentro decisivo por el trofeo.</p>
+                    </div>
+                </div>
+            </div>
+
+        </article>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
