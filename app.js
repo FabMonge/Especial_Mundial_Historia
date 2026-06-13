@@ -325,6 +325,24 @@ function gestionarPines(paso) {
     }
 }
 
+// VARIABLES GLOBALES PARA VIZ 9
+let animaciónImposibilidadJugada = false;
+
+function generarWaffleChart() {
+    const contenedor = document.getElementById('waffle-grid');
+    contenedor.innerHTML = ''; 
+    // Creamos 100 puntitos (100%)
+    for(let i = 0; i < 100; i++) {
+        let dot = document.createElement('div');
+        dot.className = 'waffle-dot';
+        // Solo el último punto brilla (representa el 0.9% redondeado a 1)
+        if (i === 99) dot.classList.add('active');
+        contenedor.appendChild(dot);
+    }
+}
+// Ejecutamos la creación del grid al inicio
+generarWaffleChart();
+
 
 function gestionarBanderas(paso) {
     capaBanderas.clearLayers();
@@ -378,93 +396,181 @@ function actualizarLeyenda(paso) {
     }
 }
 
+let pasoRenderizado = 0; 
+// NUEVO: Objeto fantasma para animar los números de forma segura, sin romper GSAP con las comas
+let contadoresViz = { pros: 0, wc: 0 };
+
 function procesarPasoNarrativo(paso) {
     if (!geoJsonLayer) return;
 
+    // FILTRO ANTI-BUGS: Si el mapa ya pintó este paso, ignora el scroll repetido.
+    if (pasoRenderizado === paso) return; 
+    pasoRenderizado = paso; // Registra que ya se procesó
+    pasoActualGlobal = paso; 
+
     actualizarLeyenda(paso);
     gestionarBanderas(paso);
-
     gestionarPines(paso);
 
+    // 1. APAGAR TODOS LOS PANELES Y ESCENARIOS POR DEFECTO
     document.getElementById('panel-extintos').classList.add('ui-hidden');
     document.getElementById('panel-mexico').classList.add('ui-hidden');
+    
+    const customVizStage = document.getElementById('custom-viz-stage');
+    const vizImposibilidad = document.getElementById('viz-imposibilidad');
+    const vizGoles = document.getElementById('viz-goles');
+    
+    if(customVizStage) customVizStage.classList.add('ui-hidden');
+    if(vizImposibilidad) vizImposibilidad.classList.add('ui-hidden');
+    if(vizGoles) vizGoles.classList.add('ui-hidden');
 
+    // 2. APAGAR/PRENDER EL MAPA (A partir del paso 9, el mapa y leyenda desaparecen)
+    const ocultarMapa = paso >= 9;
+    document.getElementById('map').style.opacity = ocultarMapa ? "0" : "1";
+    document.getElementById('ui-overlays').style.opacity = ocultarMapa ? "0" : "1";
+
+    if (ocultarMapa && customVizStage) {
+        customVizStage.classList.remove('ui-hidden');
+    }
+
+    // 3. ENCENDIDO DE PANELES ESPECÍFICOS SEGÚN EL PASO
     if(paso === 5) document.getElementById('panel-extintos').classList.remove('ui-hidden');
     if(paso === 8) document.getElementById('panel-mexico').classList.remove('ui-hidden');
 
-    if (CONFIG.camaras[paso]) {
-        map.flyTo(CONFIG.camaras[paso].centro, CONFIG.camaras[paso].zoom, {
-            duration: 1.5, easeLinearity: 0.25
-        });
+    // ============================================
+    // ESCENAS PERSONALIZADAS SIN MAPA (9 y 10)
+    // ============================================
+    
+    // PASO 9: VISUALIZACIÓN DE IMPOSIBILIDAD ESTADÍSTICA
+    if(paso === 9 && vizImposibilidad) {
+        vizImposibilidad.classList.remove('ui-hidden');
+        
+        if (typeof animaciónImposibilidadJugada !== 'undefined' && !animaciónImposibilidadJugada) {
+            // FIX: Animamos el objeto "contadoresViz" y solo actualizamos el HTML con el formato al final
+            gsap.to(contadoresViz, {
+                pros: 128694,
+                duration: 2.5,
+                ease: "power2.out",
+                onUpdate: () => {
+                    document.getElementById("count-pros").innerHTML = Math.round(contadoresViz.pros).toLocaleString('en-US');
+                }
+            });
+            
+            gsap.to(contadoresViz, {
+                wc: 1248,
+                duration: 2.5,
+                delay: 0.5,
+                ease: "power2.out",
+                onUpdate: () => {
+                    document.getElementById("count-wc").innerHTML = Math.round(contadoresViz.wc).toLocaleString('en-US');
+                }
+            });
+            animaciónImposibilidadJugada = true;
+        }
     }
 
-    geoJsonLayer.eachLayer(layer => {
-        // BLINDAJE DE EXTRACCIÓN ISO
-        const prop = layer.feature.properties;
-        const iso = prop.ISO_A3 || prop.iso_a3 || prop.adm0_a3;
+    // PASO 10: GRÁFICO DE GOLES HISTÓRICOS
+    if(paso === 10 && vizGoles) {
+        vizGoles.classList.remove('ui-hidden');
         
-        let colorFondo = CONFIG.colores.base;
-        let opacidad = 0.8;
-        let tieneNeon = false;
-
-        switch(paso) {
-            case 1:
-                if (DATA.anfitriones.includes(iso)) { colorFondo = CONFIG.colores.anfitrion; tieneNeon = true; }
-                else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
-                break;
-            case 2:
-                if (DATA.anfitriones.includes(iso)) {
-                    const cont = DATA.continentes[iso];
-                    if (cont === 'America') colorFondo = CONFIG.colores.america;
-                    else if (cont === 'Europa') colorFondo = CONFIG.colores.europa;
-                    else if (cont === 'Asia') colorFondo = CONFIG.colores.asia;
-                    else if (cont === 'Africa') colorFondo = CONFIG.colores.africa;
-                    tieneNeon = true;
-                } else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
-                break;
-            case 3:
-                if (['USA', 'MEX', 'CAN'].includes(iso)) { colorFondo = CONFIG.colores.co_2026; tieneNeon = true; }
-                else if (['JPN', 'KOR'].includes(iso)) { colorFondo = CONFIG.colores.co_2002; tieneNeon = true; }
-                else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
-                break;
-            case 4:
-                if (DATA.participantes_2026.includes(iso)) { colorFondo = CONFIG.colores.part_2026; tieneNeon = true; }
-                else if (DATA.historicos_fuera.includes(iso)) { colorFondo = CONFIG.colores.part_hist; tieneNeon = true;}
-                else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
-                break;
-            case 5: // Extintos (Mapa Oscuro)
-                colorFondo = CONFIG.colores.vacio; 
-                opacidad = 0.15;
-                break;
-            case 6: // Campeones Locales vs No Campeones
-                if (DATA.campeones_locales.includes(iso)) { colorFondo = CONFIG.colores.campeon_local; tieneNeon = true; }
-                else if (DATA.no_campeones_locales.includes(iso)) { colorFondo = CONFIG.colores.no_campeon; tieneNeon = true; }
-                else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
-                break;
-            case 7: // Ciudades Sede (Mapa muy oscuro para que brillen los pines)
-                colorFondo = CONFIG.colores.vacio; 
-                opacidad = 0.15; 
-                break;
-            case 8: // Legado México (Solo se pinta América/México)
-                if (iso === 'MEX') { colorFondo = CONFIG.colores.america; tieneNeon = true; }
-                else { colorFondo = CONFIG.colores.vacio; opacidad = 0.15; }
-                break;
-        }
-
-        // USO DEL MÉTODO NATIVO CLASSNAME PARA EVITAR BUGS EN EL DOM
-        layer.setStyle({ 
-            fillColor: colorFondo, 
-            fillOpacity: opacidad,
-            color: tieneNeon ? colorFondo : CONFIG.colores.borde, // El borde brilla
-            weight: tieneNeon ? 1.5 : 0.9,
-            className: tieneNeon ? 'pais-neon' : ''
+        // FIX: Matamos cualquier animación previa para que no pelee con el nuevo estado
+        gsap.killTweensOf(".goal-bar-fill");
+        
+        gsap.to(".goal-bar-fill", {
+            width: function(index, target) {
+                return target.getAttribute("data-width") + "%";
+            },
+            duration: 1.2,
+            ease: "power3.out",
+            stagger: 0.15 
         });
+    } else {
+        // FIX: Matamos la animación antes de forzar el reseteo a 0%
+        gsap.killTweensOf(".goal-bar-fill");
+        gsap.set(".goal-bar-fill", { width: "0%" });
+    }
+
+    // ============================================
+    // CONTROL DE MAPA Y VECTORES (Solo si el mapa es visible)
+    // ============================================
+    
+    // OPTIMIZACIÓN DE RENDIMIENTO
+    if (!ocultarMapa) {
         
-        if(tieneNeon) {
-            layer.bringToFront();
+        if (CONFIG.camaras[paso]) {
+            map.flyTo(CONFIG.camaras[paso].centro, CONFIG.camaras[paso].zoom, {
+                duration: 1.5, easeLinearity: 0.25
+            });
         }
-    });
+
+        geoJsonLayer.eachLayer(layer => {
+            const prop = layer.feature.properties;
+            const iso = prop.ISO_A3 || prop.iso_a3 || prop.adm0_a3;
+            
+            let colorFondo = CONFIG.colores.base;
+            let opacidad = 0.8;
+            let tieneNeon = false;
+
+            switch(paso) {
+                case 1:
+                    if (DATA.anfitriones.includes(iso)) { colorFondo = CONFIG.colores.anfitrion; tieneNeon = true; }
+                    else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
+                    break;
+                case 2:
+                    if (DATA.anfitriones.includes(iso)) {
+                        const cont = DATA.continentes[iso];
+                        if (cont === 'America') colorFondo = CONFIG.colores.america;
+                        else if (cont === 'Europa') colorFondo = CONFIG.colores.europa;
+                        else if (cont === 'Asia') colorFondo = CONFIG.colores.asia;
+                        else if (cont === 'Africa') colorFondo = CONFIG.colores.africa;
+                        tieneNeon = true;
+                    } else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
+                    break;
+                case 3:
+                    if (['USA', 'MEX', 'CAN'].includes(iso)) { colorFondo = CONFIG.colores.co_2026; tieneNeon = true; }
+                    else if (['JPN', 'KOR'].includes(iso)) { colorFondo = CONFIG.colores.co_2002; tieneNeon = true; }
+                    else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
+                    break;
+                case 4:
+                    if (DATA.participantes_2026.includes(iso)) { colorFondo = CONFIG.colores.part_2026; tieneNeon = true; }
+                    else if (DATA.historicos_fuera.includes(iso)) { colorFondo = CONFIG.colores.part_hist; tieneNeon = true;}
+                    else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
+                    break;
+                case 5: 
+                    colorFondo = CONFIG.colores.vacio; 
+                    opacidad = 0.15;
+                    break;
+                case 6: 
+                    if (DATA.campeones_locales.includes(iso)) { colorFondo = CONFIG.colores.campeon_local; tieneNeon = true; }
+                    else if (DATA.no_campeones_locales.includes(iso)) { colorFondo = CONFIG.colores.no_campeon; tieneNeon = true; }
+                    else { colorFondo = CONFIG.colores.vacio; opacidad = 0.3; }
+                    break;
+                case 7: 
+                    colorFondo = CONFIG.colores.vacio; 
+                    opacidad = 0.15; 
+                    break;
+                case 8: 
+                    if (iso === 'MEX') { colorFondo = CONFIG.colores.america; tieneNeon = true; }
+                    else { colorFondo = CONFIG.colores.vacio; opacidad = 0.15; }
+                    break;
+            }
+
+            layer.setStyle({ 
+                fillColor: colorFondo, 
+                fillOpacity: opacidad,
+                color: tieneNeon ? colorFondo : CONFIG.colores.borde,
+                weight: tieneNeon ? 1.5 : 0.9,
+                className: tieneNeon ? 'pais-neon' : ''
+            });
+            
+            if(tieneNeon) {
+                layer.bringToFront();
+            }
+        });
+    }
 }
+
+
 
 // ===============================================
 // MOTOR GSAP SCROLL-JACKING (ACTUALIZADO)
@@ -474,16 +580,22 @@ function iniciarMotorGSAP() {
     
     gsap.utils.toArray('.step').forEach((step) => {
         let nPaso = parseInt(step.getAttribute("data-step"));
-        
-        // EL CEREBRO: Busca primero si hay un step-wrap, si no lo hay, selecciona la step-card.
         let card = step.querySelector('.step-wrap') || step.querySelector('.step-card');
         
         ScrollTrigger.create({
-            trigger: step, start: "top 60%", end: "bottom 40%",
-            onEnter: () => { gsap.to(card, { opacity: 1, duration: 0.5 }); procesarPasoNarrativo(nPaso); },
-            onEnterBack: () => { gsap.to(card, { opacity: 1, duration: 0.5 }); procesarPasoNarrativo(nPaso); },
-            onLeave: () => gsap.to(card, { opacity: 0.2, duration: 0.5 }),
-            onLeaveBack: () => gsap.to(card, { opacity: 0.2, duration: 0.5 })
+            trigger: step, 
+            start: "top 50%", /* Se dispara exactamente al medio del imán */
+            end: "bottom 50%",
+            onEnter: () => { 
+                gsap.to(card, { opacity: 1, duration: 0.4, overwrite: true }); 
+                procesarPasoNarrativo(nPaso); 
+            },
+            onEnterBack: () => { 
+                gsap.to(card, { opacity: 1, duration: 0.4, overwrite: true }); 
+                procesarPasoNarrativo(nPaso); 
+            },
+            onLeave: () => gsap.to(card, { opacity: 0.2, duration: 0.4, overwrite: true }),
+            onLeaveBack: () => gsap.to(card, { opacity: 0.2, duration: 0.4, overwrite: true })
         });
     });
 }
