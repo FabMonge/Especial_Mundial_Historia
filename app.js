@@ -163,6 +163,17 @@ const DATA = {
         { nombre: 'Doha', lat: 25.2854, lng: 51.531 }, { nombre: 'Lusail', lat: 25.4278, lng: 51.4919 },
         { nombre: 'Al Rayyan', lat: 25.2919, lng: 51.4244 }, { nombre: 'Al Khor', lat: 25.69, lng: 51.4965 },
         { nombre: 'Al Wakrah', lat: 25.166, lng: 51.5985 }, { nombre: 'Nueva York', lat: 40.7128, lng: -74.006 }
+    ],
+    // NUEVO ARRAY (Agrega esto al final del objeto DATA)
+    tarjetas_historicas: [
+        { y: 1966, amarillo: 21, rojo: 5 }, { y: 1970, amarillo: 51, rojo: 0 },
+        { y: 1974, amarillo: 86, rojo: 5 }, { y: 1978, amarillo: 59, rojo: 3 },
+        { y: 1982, amarillo: 99, rojo: 5 }, { y: 1986, amarillo: 137, rojo: 8 },
+        { y: 1990, amarillo: 165, rojo: 16 }, { y: 1994, amarillo: 221, rojo: 15 },
+        { y: 1998, amarillo: 250, rojo: 22 }, { y: 2002, amarillo: 261, rojo: 16 }, 
+        { y: 2006, amarillo: 304, rojo: 28 }, { y: 2010, amarillo: 242, rojo: 16 },
+        { y: 2014, amarillo: 181, rojo: 10 }, { y: 2018, amarillo: 219, rojo: 4 },
+        { y: 2022, amarillo: 221, rojo: 4 }
     ]
 };
 
@@ -218,8 +229,8 @@ const CONFIG = {
         3: { centro: esMovil ? [20, 0] : [35, 20], zoom: esMovil ? 1.2 : 2.2 },
         4: { centro: esMovil ? [20, 0] : [30, 10], zoom: esMovil ? 1.2 : 2.1 },
         5: { centro: esMovil ? [45, 15] : [50, 20], zoom: esMovil ? 1.5 : 2.8 },
-        6: { centro: esMovil ? [20, 0] : [30, 10], zoom: esMovil ? 1.0 : 2.1 },
-        7: { centro: esMovil ? [20, 0] : [30, -30], zoom: esMovil ? 1.0 : 2.3 },
+        6: { centro: esMovil ? [20, 0] : [30, 15], zoom: esMovil ? 1.0 : 2.1 },
+        7: { centro: esMovil ? [20, 0] : [30, 10], zoom: esMovil ? 1.0 : 2.3 },
         8: { centro: esMovil ? [20, -100] : [23, -102], zoom: esMovil ? 2.5 : 3.8 }
         
     }
@@ -327,6 +338,7 @@ function gestionarPines(paso) {
 
 // VARIABLES GLOBALES PARA VIZ 9
 let animaciónImposibilidadJugada = false;
+let animacionDashboardJugada = false; // Nueva bandera para el Paso 12
 
 function generarWaffleChart() {
     const contenedor = document.getElementById('waffle-grid');
@@ -342,6 +354,8 @@ function generarWaffleChart() {
 }
 // Ejecutamos la creación del grid al inicio
 generarWaffleChart();
+
+
 
 
 function gestionarBanderas(paso) {
@@ -398,7 +412,7 @@ function actualizarLeyenda(paso) {
 
 let pasoRenderizado = 0; 
 // NUEVO: Objeto fantasma para animar los números de forma segura, sin romper GSAP con las comas
-let contadoresViz = { pros: 0, wc: 0 };
+let contadoresViz = { pros: 0, wc: 0, golesTotales: 0, penales: 0 };
 
 function procesarPasoNarrativo(paso) {
     if (!geoJsonLayer) return;
@@ -412,82 +426,89 @@ function procesarPasoNarrativo(paso) {
     gestionarBanderas(paso);
     gestionarPines(paso);
 
-    // 1. APAGAR TODOS LOS PANELES Y ESCENARIOS POR DEFECTO
-    document.getElementById('panel-extintos').classList.add('ui-hidden');
-    document.getElementById('panel-mexico').classList.add('ui-hidden');
-    
-    const customVizStage = document.getElementById('custom-viz-stage');
-    const vizImposibilidad = document.getElementById('viz-imposibilidad');
-    const vizGoles = document.getElementById('viz-goles');
-    
-    if(customVizStage) customVizStage.classList.add('ui-hidden');
-    if(vizImposibilidad) vizImposibilidad.classList.add('ui-hidden');
-    if(vizGoles) vizGoles.classList.add('ui-hidden');
+    // 1. APAGAR TODOS LOS PANELES UI (Método limpio y optimizado)
+    const paneles = [
+        'panel-extintos', 'panel-mexico', 
+        'viz-imposibilidad', 'viz-goles', 
+        'viz-rostros', 'viz-tiempos', 'viz-tarjetas'
+    ];
+    paneles.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.add('ui-hidden');
+    });
 
     // 2. APAGAR/PRENDER EL MAPA (A partir del paso 9, el mapa y leyenda desaparecen)
     const ocultarMapa = paso >= 9;
     document.getElementById('map').style.opacity = ocultarMapa ? "0" : "1";
     document.getElementById('ui-overlays').style.opacity = ocultarMapa ? "0" : "1";
+    
+    const customVizStage = document.getElementById('custom-viz-stage');
+    if (ocultarMapa && customVizStage) customVizStage.classList.remove('ui-hidden');
+    else if (customVizStage) customVizStage.classList.add('ui-hidden');
 
-    if (ocultarMapa && customVizStage) {
-        customVizStage.classList.remove('ui-hidden');
-    }
-
-    // 3. ENCENDIDO DE PANELES ESPECÍFICOS SEGÚN EL PASO
+    // 3. ENCENDIDO ESPECÍFICO SEGÚN EL PASO
     if(paso === 5) document.getElementById('panel-extintos').classList.remove('ui-hidden');
     if(paso === 8) document.getElementById('panel-mexico').classList.remove('ui-hidden');
+    if(paso === 9) document.getElementById('viz-imposibilidad').classList.remove('ui-hidden');
+    if(paso === 10) document.getElementById('viz-goles').classList.remove('ui-hidden');
+    if(paso === 11) document.getElementById('viz-rostros').classList.remove('ui-hidden');
+    if(paso === 12) document.getElementById('viz-tiempos').classList.remove('ui-hidden');
+    if(paso === 13) document.getElementById('viz-tarjetas').classList.remove('ui-hidden');
 
     // ============================================
-    // ESCENAS PERSONALIZADAS SIN MAPA (9 y 10)
+    // ANIMACIONES ESPECÍFICAS DE GSAP (ESCENAS SIN MAPA)
     // ============================================
     
-    // PASO 9: VISUALIZACIÓN DE IMPOSIBILIDAD ESTADÍSTICA
-    if(paso === 9 && vizImposibilidad) {
-        vizImposibilidad.classList.remove('ui-hidden');
-        
-        if (typeof animaciónImposibilidadJugada !== 'undefined' && !animaciónImposibilidadJugada) {
-            // FIX: Animamos el objeto "contadoresViz" y solo actualizamos el HTML con el formato al final
-            gsap.to(contadoresViz, {
-                pros: 128694,
-                duration: 2.5,
-                ease: "power2.out",
-                onUpdate: () => {
-                    document.getElementById("count-pros").innerHTML = Math.round(contadoresViz.pros).toLocaleString('en-US');
-                }
-            });
-            
-            gsap.to(contadoresViz, {
-                wc: 1248,
-                duration: 2.5,
-                delay: 0.5,
-                ease: "power2.out",
-                onUpdate: () => {
-                    document.getElementById("count-wc").innerHTML = Math.round(contadoresViz.wc).toLocaleString('en-US');
-                }
-            });
-            animaciónImposibilidadJugada = true;
-        }
+    // Paso 9: Contadores Waffle
+    if(paso === 9 && typeof animaciónImposibilidadJugada !== 'undefined' && !animaciónImposibilidadJugada) {
+        gsap.to(contadoresViz, { pros: 128694, duration: 2.5, ease: "power2.out", onUpdate: () => document.getElementById("count-pros").innerHTML = Math.round(contadoresViz.pros).toLocaleString('en-US') });
+        gsap.to(contadoresViz, { wc: 1248, duration: 2.5, delay: 0.5, ease: "power2.out", onUpdate: () => document.getElementById("count-wc").innerHTML = Math.round(contadoresViz.wc).toLocaleString('en-US') });
+        animaciónImposibilidadJugada = true;
     }
 
-    // PASO 10: GRÁFICO DE GOLES HISTÓRICOS
-    if(paso === 10 && vizGoles) {
-        vizGoles.classList.remove('ui-hidden');
-        
-        // FIX: Matamos cualquier animación previa para que no pelee con el nuevo estado
-        gsap.killTweensOf(".goal-bar-fill");
-        
-        gsap.to(".goal-bar-fill", {
-            width: function(index, target) {
-                return target.getAttribute("data-width") + "%";
-            },
-            duration: 1.2,
-            ease: "power3.out",
-            stagger: 0.15 
-        });
+    // Paso 10: Barras de Goles
+    gsap.killTweensOf(".goal-bar-fill");
+    if(paso === 10) {
+        gsap.to(".goal-bar-fill", { width: function(i, t) { return t.getAttribute("data-width") + "%"; }, duration: 1.2, ease: "power3.out", stagger: 0.15 });
     } else {
-        // FIX: Matamos la animación antes de forzar el reseteo a 0%
-        gsap.killTweensOf(".goal-bar-fill");
         gsap.set(".goal-bar-fill", { width: "0%" });
+    }
+
+    // Paso 12: Cronómetro de Tiempos
+    gsap.killTweensOf(".chrono-segment, .mg-bar, #penalty-donut");
+    if(paso === 12) {
+        // 1. Animar el cronómetro
+        gsap.to(".chrono-segment", { width: function(i, t) { return t.getAttribute("data-width") + "%"; }, duration: 1.5, ease: "power3.out", stagger: 0.2 });
+        // 2. Animar mini barras Top 5
+        gsap.to(".mg-bar", { width: function(i, t) { return t.getAttribute("data-width") + "%"; }, duration: 1.2, ease: "power3.out", stagger: 0.1 });
+        // 3. Animar gráfico de Dona (Actualizando variable CSS)
+        gsap.to("#penalty-donut", { "--p": 7.87, duration: 2, ease: "power2.out" });
+        
+        // 4. Animar los Contadores numéricos (solo una vez)
+        if (!animacionDashboardJugada) {
+            gsap.to(contadoresViz, { 
+                golesTotales: 2720, duration: 2.5, ease: "power2.out", 
+                onUpdate: () => document.getElementById("count-total-goals").innerHTML = Math.round(contadoresViz.golesTotales).toLocaleString('en-US') 
+            });
+            gsap.to(contadoresViz, { 
+                penales: 214, duration: 2.5, delay: 0.5, ease: "power2.out", 
+                onUpdate: () => document.getElementById("count-penalties").innerHTML = Math.round(contadoresViz.penales) 
+            });
+            animacionDashboardJugada = true;
+        }
+    } else {
+        // Reset visual si el usuario sale del paso 12
+        gsap.set(".chrono-segment, .mg-bar", { width: "0%" });
+        gsap.set("#penalty-donut", { "--p": 0 });
+    }
+    
+    // Paso 13: Gráfico Disruptivo de Tarjetas (Stem Chart)
+    gsap.killTweensOf(".stem-y, .stem-r");
+    if(paso === 13) {
+        // La animación "back.out" hace que las líneas salten un poco hacia arriba y reboten suavemente
+        gsap.to(".stem-y, .stem-r", { height: function(i, t) { return t.getAttribute("data-height") + "%"; }, duration: 1.5, ease: "back.out(1.2)", stagger: 0.05 });
+    } else {
+        gsap.set(".stem-y, .stem-r", { height: "0%" });
     }
 
     // ============================================
@@ -572,6 +593,7 @@ function procesarPasoNarrativo(paso) {
 
 
 
+
 // ===============================================
 // MOTOR GSAP SCROLL-JACKING (ACTUALIZADO)
 // ===============================================
@@ -599,3 +621,51 @@ function iniciarMotorGSAP() {
         });
     });
 }
+
+// ===============================================
+// GENERADORES DE GRÁFICOS PERSONALIZADOS (13)
+// ===============================================
+
+// 1. Datos históricos de tarjetas
+DATA.tarjetas_historicas = [
+    { y: 1966, amarillo: 21, rojo: 5 }, { y: 1970, amarillo: 51, rojo: 0 },
+    { y: 1974, amarillo: 86, rojo: 5 }, { y: 1978, amarillo: 59, rojo: 3 },
+    { y: 1982, amarillo: 99, rojo: 5 }, { y: 1986, amarillo: 137, rojo: 8 },
+    { y: 1990, amarillo: 165, rojo: 16 }, { y: 1994, amarillo: 221, rojo: 15 },
+    { y: 1998, amarillo: 250, rojo: 22 }, { y: 2002, amarillo: 261, rojo: 16 }, 
+    { y: 2006, amarillo: 304, rojo: 28 }, { y: 2010, amarillo: 242, rojo: 16 },
+    { y: 2014, amarillo: 181, rojo: 10 }, { y: 2018, amarillo: 219, rojo: 4 },
+    { y: 2022, amarillo: 221, rojo: 4 }
+];
+
+// 2. Función que dibuja el gráfico Stem Chart en HTML
+function generarGraficoTarjetas() {
+    const contenedor = document.getElementById('cards-chart');
+    if (!contenedor) return; // Evita errores si el HTML aún no carga
+    
+    contenedor.innerHTML = '';
+    const maxAmarillas = 304; // Alemania 2006 es el techo (100% de altura)
+    
+    DATA.tarjetas_historicas.forEach(d => {
+        // Cálculo matemático de altura (porcentaje)
+        const pAmarillo = (d.amarillo / maxAmarillas) * 100;
+        const pRojo = (d.rojo / maxAmarillas) * 100; // Usamos el mismo divisor para respetar la escala
+
+        const groupHTML = `
+            <div class="card-stem-group">
+                <div class="card-stem-wrapper">
+                    <div class="stem-y" data-height="${pAmarillo}" style="height: 0%;">
+                        <div class="card-top bg-yellow"></div>
+                    </div>
+                    <div class="stem-r" data-height="${pRojo}" style="height: 0%;">
+                        <div class="card-top bg-red"></div>
+                    </div>
+                </div>
+                <div class="card-year">${d.y}</div>
+            </div>
+        `;
+        contenedor.innerHTML += groupHTML;
+    });
+}
+// Ejecutamos la creación del grid al inicio
+generarGraficoTarjetas();

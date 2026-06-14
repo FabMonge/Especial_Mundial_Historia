@@ -67,7 +67,7 @@
             </div>
             <div id="custom-viz-stage" class="ui-hidden">
                 
-            <div id="viz-imposibilidad" class="viz-panel ui-hidden">
+                <div id="viz-imposibilidad" class="viz-panel ui-hidden">
                     <div class="stats-massive">
                         <div class="stat-block">
                             <span class="stat-number" id="count-pros">0</span>
@@ -131,6 +131,129 @@
                         </div>
                         
                         <p class="footnote">* Se consideran los goles anotados por Alemania Federal en las ediciones que participó.</p>
+                    </div>
+                </div>
+
+                <div id="viz-rostros" class="viz-panel ui-hidden">
+                    <div class="rostros-container">
+                        <div class="hero-card">
+                            <img src="fotos/klose_gol.jpg" class="hero-bg" alt="Gol de Klose 2014" onerror="this.src='https://via.placeholder.com/600x300/151515/333333?text=Klose+Gol+Background'">
+                            <div class="hero-overlay">
+                                <img src="fotos/klose.png" class="hero-face" alt="Miroslav Klose" onerror="this.src='https://via.placeholder.com/150/222222/aaaaaa?text=Klose'">
+                                <div class="hero-data">
+                                    <img src="https://flagcdn.com/w40/de.png" class="hero-flag" alt="Alemania">
+                                    <div class="hero-text">
+                                        <h3>Miroslav Klose</h3>
+                                        <span class="hero-goals glow-gold">16 Goles</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="other-players">
+                            <div class="player-card">
+                                <img src="fotos/ronaldo.png" class="player-face" alt="Ronaldo" onerror="this.src='https://via.placeholder.com/80/222222/aaaaaa?text=Ronaldo'">
+                                <img src="https://flagcdn.com/w20/br.png" class="p-flag" alt="Brasil">
+                                <h4>Ronaldo Nazario</h4>
+                                <span class="p-goals">15</span>
+                            </div>
+                            <div class="player-card">
+                                <img src="fotos/muller.png" class="player-face" alt="Müller" onerror="this.src='https://via.placeholder.com/80/222222/aaaaaa?text=Muller'">
+                                <img src="https://flagcdn.com/w20/de.png" class="p-flag" alt="Alemania">
+                                <h4>Gerd Müller</h4>
+                                <span class="p-goals">14</span>
+                            </div>
+                            <div class="player-card">
+                                <img src="fotos/fontaine.png" class="player-face" alt="Fontaine" onerror="this.src='https://via.placeholder.com/80/222222/aaaaaa?text=Fontaine'">
+                                <img src="https://flagcdn.com/w20/fr.png" class="p-flag" alt="Francia">
+                                <h4>Just Fontaine</h4>
+                                <span class="p-goals">13</span>
+                            </div>
+                            <div class="player-card">
+                                <img src="fotos/messi.png" class="player-face" alt="Messi" onerror="this.src='https://via.placeholder.com/80/222222/aaaaaa?text=Messi'">
+                                <img src="https://flagcdn.com/w20/ar.png" class="p-flag" alt="Argentina">
+                                <h4>Lionel Messi</h4>
+                                <span class="p-goals">13</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="viz-tiempos" class="viz-panel ui-hidden">
+                    
+                    <div class="total-goals-banner">
+                        <span class="tg-number glow-gold" id="count-total-goals">0</span>
+                        <div class="tg-text">
+                            <span class="tg-label">Goles en la historia de los Mundiales*</span>
+                            <span class="tg-asterisk">* Hasta Catar 2022</span>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        
+                        <div class="dash-card">
+                            <h3>¿Cuándo se gritan?</h3>
+                            <div class="time-stats">
+                                <div class="t-stat"><span class="t-perc" style="color: #3498db;">40.9%</span><span class="t-label">1er Tiempo</span></div>
+                                <div class="t-stat"><span class="t-perc" style="color: #2ecc71;">52.4%</span><span class="t-label">2do Tiempo</span></div>
+                                <div class="t-stat"><span class="t-perc" style="color: #9b59b6;">6.7%</span><span class="t-label">Extra</span></div>
+                            </div>
+                            <div class="timeline-chronometer">
+                                <div class="chrono-track">
+                                    <div class="chrono-segment c-first" data-width="37.5"></div>
+                                    <div class="chrono-segment c-second" data-width="37.5"></div>
+                                    <div class="chrono-segment c-extra" data-width="25"></div>
+                                </div>
+                                <div class="chrono-markers">
+                                    <span style="position: absolute; left: 0;">0'</span>
+                                    <span style="position: absolute; left: 37.5%; transform: translateX(-50%);">45'</span>
+                                    <span style="position: absolute; left: 75%; transform: translateX(-50%);">90'</span>
+                                    <span style="position: absolute; right: 0;">120'</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dash-card">
+                            <h3>Mundiales con más goles</h3>
+                            <div class="top-cups-list">
+                                <div class="mini-goal-row"><span class="mg-year">Catar 2022</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="100" style="background: #f1c40f;"></div></div><span class="mg-count">172</span></div>
+                                <div class="mini-goal-row"><span class="mg-year">Francia 1998</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="99.4" style="background: #e0e0e0;"></div></div><span class="mg-count">171</span></div>
+                                <div class="mini-goal-row"><span class="mg-year">Brasil 2014</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="99.4" style="background: #e0e0e0;"></div></div><span class="mg-count">171</span></div>
+                                <div class="mini-goal-row"><span class="mg-year">Rusia 2018</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="98.2" style="background: #e0e0e0;"></div></div><span class="mg-count">169</span></div>
+                                <div class="mini-goal-row"><span class="mg-year">Japón/Corea 2002</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="93.6" style="background: #e0e0e0;"></div></div><span class="mg-count">161</span></div>
+                            </div>
+                        </div>
+
+                        <div class="dash-card dash-full-width pie-layout">
+                            <div class="pie-wrapper">
+                                <div class="donut-chart" id="penalty-donut" style="--p: 0;"></div>
+                                <div class="pie-center">
+                                    <span id="count-penalties">0</span>
+                                    <small>Penales</small>
+                                </div>
+                            </div>
+                            <div class="pie-info">
+                                <h3>La efectividad de los 12 pasos</h3>
+                                <p>Pese a la tensión que generan, la vía penal representa una fracción muy pequeña de las anotaciones totales en el certamen.</p>
+                                <div class="pie-legend-box">
+                                    <div class="p-leg-item"><div class="p-box" style="background: rgba(255,255,255,0.1);"></div> Jugada (92.1%)</div>
+                                    <div class="p-leg-item"><div class="p-box" style="background: #e74c3c; box-shadow: 0 0 10px #e74c3c;"></div> Tiro Penal (7.9%)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="viz-tarjetas" class="viz-panel ui-hidden">
+                    <div class="cards-container">
+                        <h3>Evolución de la indisciplina</h3>
+                        <p class="cards-subtitle">Registro de tarjetas desde su implementación en Inglaterra 1966.</p>
+                        <div id="cards-chart" class="cards-chart"></div>
+                        <div class="cards-legend">
+                            <span class="c-leg-item"><div class="c-box bg-yellow"></div> Amarillas</span>
+                            <span class="c-leg-item"><div class="c-box bg-red"></div> Rojas</span>
+                        </div>
                     </div>
                 </div>
 
@@ -245,6 +368,34 @@
                         <h2 style="color: #f1c40f;">La historia se forja con goles</h2>
                         <p>Brasil, Argentina, Francia, Alemania e Italia son las naciones que más goles anotaron en la historia de los Mundiales.</p>
                         <p style="margin-top: 15px;">El pentacampeón del mundo, Brasil, tiene el primer lugar absoluto, con una ventaja monumental de <strong>más de 85 goles</strong> sobre el segundo lugar.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="11">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2>Rostros que hicieron historia</h2>
+                        <p>El alemán Miroslav Klose, con 16 anotaciones, es el goleador histórico de los Mundiales. Anotó por última vez en las semifinales del 2014 en la histórica goleada de 7-1 que su selección le propinó al anfitrión Brasil.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="12">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2 style="color: #2ecc71;">Gritos de gol</h2>
+                        <p>En la historia de los Mundiales se han marcado 2.720 goles. Como refleja la estadística, los equipos tienden a arriesgar más en la recta final del partido: la gran mayoría de las anotaciones se lograron en el segundo tiempo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="13">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2 style="color: #e74c3c;">Garra y agresividad</h2>
+                        <p>Las tarjetas para sancionar faltas se incorporaron recién en 1966. Desde entonces, los árbitros del Mundial han sancionado a los jugadores con 2.517 tarjetas amarillas y 157 rojas.</p>
+                        <p style="margin-top: 15px;">Alemania 2006 fue el certamen más friccionado, donde se impusieron la mayor cantidad de amonestaciones de la historia.</p>
                     </div>
                 </div>
             </div>
