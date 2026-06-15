@@ -185,7 +185,16 @@ const DATA = {
         { n: 'Héctor Chumpitaz', g: 1 }, { n: 'José Velásquez', g: 1 }, { n: 'César Cueto', g: 1 },
         { n: 'Roberto Chale', g: 1 }, { n: 'Guillermo la Rosa', g: 1 }, { n: 'Rubén Díaz', g: 1 },
         { n: 'Paolo Guerrero', g: 1 }, { n: 'André Carrillo', g: 1 }
-    ]
+    ],
+    coordenadas_paises: {
+        'MEX': [23.6, -102.5], 'ITA': [41.8, 20.5], 'FRA': [46.2, -10], 
+        'BRA': [-14.2, -51.9], 'DEU': [51.1, 30.4], 'ARG': [-50, -55.6], 
+        'USA': [39.0, -98.0], 'URY': [-32.5, -40.7], 'CHE': [58, 10.8], 
+        'SWE': [73.1, 18.6], 'CHL': [-35.6, -83.5], 'GBR': [60.0, -25.5], 
+        'ESP': [30.4,-15.7], 'JPN': [36.2, 150.2], 'KOR': [40, 115.7], 
+        'ZAF': [-40, 22.9], 'RUS': [61.5, 95.0], 'QAT': [15.3, 51.1], 
+        'CAN': [56.1, -106.3]
+    },
 };
 
 const CONFIG = {
@@ -242,7 +251,7 @@ const CONFIG = {
         5: { centro: esMovil ? [45, 15] : [50, 20], zoom: esMovil ? 1.5 : 2.8 },
         6: { centro: esMovil ? [20, 0] : [30, 15], zoom: esMovil ? 1.0 : 2.1 },
         7: { centro: esMovil ? [20, 0] : [30, 10], zoom: esMovil ? 1.0 : 2.3 },
-        8: { centro: esMovil ? [20, -100] : [23, -102], zoom: esMovil ? 2.5 : 3.8 }
+        8: { centro: esMovil ? [20, 20] : [18, -102], zoom: esMovil ? 2.5 : 5.5 }
         
     }
 };
@@ -289,7 +298,7 @@ function configurarHover(feature, layer) {
 
     const tooltipHTML = `<div class="tooltip-content">${imgBandera}<span>${nombreFinal}</span></div>`;
 
-    layer.bindTooltip(tooltipHTML, { sticky: true, className: 'custom-tooltip' });
+    //layer.bindTooltip(tooltipHTML, { sticky: true, className: 'custom-tooltip' });
     
     layer.on({
         mouseover: (e) => { 
@@ -310,8 +319,91 @@ function configurarHover(feature, layer) {
 }
 
 document.getElementById('btn-comenzar').addEventListener('click', () => {
-    document.getElementById('gsap-pin-container').scrollIntoView({ behavior: 'smooth' });
+    // 1. Desbloqueamos el scroll del cuerpo de la página
+    document.body.classList.remove('locked'); 
+    
+    // 2. Encendemos los controles flotantes de navegación
+    const nav = document.getElementById('nav-controls');
+    if (nav) nav.classList.remove('ui-hidden');
+
+    // 3. Desplazamiento nativo suave (Exactamente el mismo efecto que la flecha hacia abajo)
+    const primerPaso = document.querySelector('.step[data-step="1"]');
+    if (primerPaso) primerPaso.scrollIntoView({ behavior: 'smooth' });
 });
+
+// Lógica de los botones de navegación
+// ===============================================
+// NAVEGACIÓN ESTILO APP (1 GESTO = 1 ESCENA)
+// ===============================================
+let isScrolling = false;
+const cooldownTiempo = 1000; // 1 segundo de seguridad para no saltar escenas por accidente
+
+function ejecutarSalto(elementoDestino) {
+    if (elementoDestino) {
+        isScrolling = true;
+        elementoDestino.scrollIntoView({ behavior: 'smooth' });
+        setTimeout(() => { isScrolling = false; }, cooldownTiempo);
+    }
+}
+
+function moverEscena(direccion) {
+    if (document.body.classList.contains('locked') || isScrolling) return;
+    
+    // Detecta si el usuario está hasta abajo (en los créditos del Footer)
+    const scrollAlFondo = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50;
+
+    if (direccion === 'abajo') {
+        if (pasoActualGlobal < 19) {
+            ejecutarSalto(document.querySelector(`.step[data-step="${pasoActualGlobal + 1}"]`));
+        } else if (pasoActualGlobal === 19 && !scrollAlFondo) {
+            isScrolling = true;
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            setTimeout(() => { isScrolling = false; }, cooldownTiempo);
+        }
+    } 
+    else if (direccion === 'arriba') {
+        if (scrollAlFondo) {
+            ejecutarSalto(document.querySelector('.step[data-step="19"]'));
+        } else if (pasoActualGlobal > 1) {
+            ejecutarSalto(document.querySelector(`.step[data-step="${pasoActualGlobal - 1}"]`));
+        }
+    }
+}
+
+// 0. Conectamos los botones físicos de flechas a la función maestra
+document.getElementById('btn-up').addEventListener('click', () => moverEscena('arriba'));
+document.getElementById('btn-down').addEventListener('click', () => moverEscena('abajo'));
+
+// 1. Detección Inteligente de Ratón (PC)
+window.addEventListener('wheel', (e) => {
+    if (document.body.classList.contains('locked')) return;
+    e.preventDefault(); // Apaga el scroll tosco del navegador
+    moverEscena(e.deltaY > 0 ? 'abajo' : 'arriba');
+}, { passive: false });
+
+// 2. Detección Inteligente de Teclado (Flechas y Espacio)
+window.addEventListener('keydown', (e) => {
+    if (document.body.classList.contains('locked')) return;
+    if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
+        e.preventDefault(); 
+        moverEscena('abajo');
+    } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
+        e.preventDefault(); 
+        moverEscena('arriba');
+    }
+}, { passive: false });
+
+// 3. Detección Inteligente Táctil (Celulares/Tablets)
+let touchStartY = 0;
+window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: false });
+window.addEventListener('touchmove', (e) => {
+    if (document.body.classList.contains('locked')) return;
+    e.preventDefault(); // Evita que la pantalla se arrastre libremente
+    let deltaY = touchStartY - e.touches[0].clientY;
+    if (deltaY > 40) moverEscena('abajo');
+    else if (deltaY < -40) moverEscena('arriba');
+}, { passive: false });
+
 
 // ===============================================
 // 5. CONTROLADOR NARRATIVO 
@@ -371,17 +463,49 @@ generarWaffleChart();
 
 function gestionarBanderas(paso) {
     capaBanderas.clearLayers();
-    if (paso === 3) {
+    
+    // Banderas para el Paso 1 (Todos los 19 anfitriones)
+    if (paso === 1) {
+        DATA.anfitriones.forEach(iso => {
+            const coords = DATA.coordenadas_paises[iso];
+            const info = PAISES_TRADUCCION[iso];
+            
+            if (coords && info) {
+                const htmlBandera = `<img src="https://flagcdn.com/w40/${info.flag}.png" class="flag-rectangular" alt="${info.es}">`;
+                const iconoBandera = L.divIcon({ 
+                    html: htmlBandera, 
+                    className: 'map-flag-icon', 
+                    iconSize: [45, 30], 
+                    iconAnchor: [22, 15] 
+                });
+                L.marker(coords, { icon: iconoBandera }).addTo(capaBanderas);
+            }
+        });
+    } 
+    // Banderas para el Paso 3 (Corea/Japón y Norteamérica)
+    else if (paso === 3) {
         DATA.banderas.forEach(b => {
-            // Uso de la nueva clase rectangular
             const htmlBandera = `<img src="https://flagcdn.com/w40/${b.iso2}.png" class="flag-rectangular" alt="${b.iso}">`;
             const iconoBandera = L.divIcon({ 
                 html: htmlBandera, 
                 className: 'map-flag-icon', 
                 iconSize: [45, 30], 
-                iconAnchor: [22, 15] // Centra el rectángulo
+                iconAnchor: [22, 15] 
             });
             L.marker([b.lat, b.lng], { icon: iconoBandera }).addTo(capaBanderas);
+        });
+    }
+
+    else if (paso === 6) {
+        DATA.campeones_locales.forEach(iso => {
+            const coords = DATA.coordenadas_paises[iso];
+            const info = PAISES_TRADUCCION[iso];
+            
+            if (coords && info) {
+                const htmlBandera = `<img src="https://flagcdn.com/w40/${info.flag}.png" class="flag-rectangular" alt="${info.es}" style="box-shadow: 0 0 15px #f1c40f; border-color: #f1c40f;">`;
+                const iconoBandera = L.divIcon({ html: htmlBandera, className: 'map-flag-icon', iconSize: [45, 30], iconAnchor: [22, 15] });
+                L.marker(coords, { icon: iconoBandera }).addTo(capaBanderas);
+            }
         });
     }
 }
@@ -391,7 +515,7 @@ function actualizarLeyenda(paso) {
     if (CONFIG.leyendas[paso]) {
         
         // LÓGICA DE TÍTULO DE LEYENDA
-        const tituloLeyenda = paso === 2 ? "Campeonatos del mundo organizados" : "Leyenda";
+        const tituloLeyenda = paso === 2 ? "Copas del Mundo organizadas" : "Leyenda";
         let html = `<div class="legend-title">${tituloLeyenda}</div>`;
         
         CONFIG.leyendas[paso].forEach(item => {
@@ -432,6 +556,13 @@ function procesarPasoNarrativo(paso) {
     if (pasoRenderizado === paso) return; 
     pasoRenderizado = paso; // Registra que ya se procesó
     pasoActualGlobal = paso; 
+
+    const btnUp = document.getElementById('btn-up');
+    const btnDown = document.getElementById('btn-down');
+    if (btnUp && btnDown) {
+        btnUp.disabled = paso === 1;
+        btnDown.disabled = paso === 19;
+    }
 
     actualizarLeyenda(paso);
     gestionarBanderas(paso);

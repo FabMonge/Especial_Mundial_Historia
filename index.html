@@ -9,12 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="locked">
 
     <section id="intro-screen">
         <div class="gif-overlay"></div>
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc2pxbndnMWp4cTB6Nmh4eXNqbXJ1cWZxdndqeDB4bWp3bDBxeHk5aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKoHXIex1B7wNio/giphy.gif" alt="Fútbol" class="bg-gif" autoplay loop muted playsinline>
+        <img src="fotos/prueba 5 f.gif" alt="Fútbol" class="bg-gif" autoplay loop muted playsinline>
         <div class="intro-content">
+            <div class="kicker">
+            <img src="fotos/logo_ecdata.png" alt="Logo ECData" onerror="this.style.display='none'">
+            </div>
             <h1 class="headline">La pelota rueda por el mundo entero</h1>
             <h2 class="subheadline">Cada cuatro años, selecciones de todo el planeta se reúnen para competir en la Copa del Mundo. Este es un repaso por una historia que empezó hace 96 años.</h2>
             <button id="btn-comenzar" class="start-btn">Comenzar el recorrido ↓</button>
@@ -33,7 +36,7 @@
                     <p class="panel-desc">El fútbol conserva el archivo de naciones que ya no existen:</p>
                     <div class="extintos-list">
                         <div class="extinto-item">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/Flag_of_Yugoslavia_%281946-1992%29.svg" class="extinto-flag" alt="Yugoslavia">
+                            <img src="fotos/Yugoslavia.svg" class="extinto-flag" alt="Yugoslavia">
                             <div class="extinto-text"><span>Yugoslavia</span><small>8 participaciones</small></div>
                         </div>
                         <div class="extinto-item">
@@ -49,21 +52,32 @@
                             <div class="extinto-text"><span>Alemania Democrática</span><small>1 participación</small></div>
                         </div>
                         <div class="extinto-item">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Flag_of_Serbia_and_Montenegro.svg" class="extinto-flag" alt="Serbia y Montenegro">
+                            <img src="fotos/serbia_montenegro.svg" class="extinto-flag" alt="Serbia y Montenegro">
                             <div class="extinto-text"><span>Serbia y Montenegro</span><small>1 participación</small></div>
                         </div>
                     </div>
                 </div>
-
                 <div id="panel-mexico" class="hologram-panel side-panel ui-hidden">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Estadio_Azteca_en_2015.jpg/640px-Estadio_Azteca_en_2015.jpg" alt="Estadio Azteca" class="mexico-img">
+                    <img src="fotos/azteca.png" alt="Estadio Azteca" class="mexico-img">
                     <h3>Ciudad de México</h3>
-                    <p class="panel-desc">La única ciudad del planeta en albergar dos finales del mundo. Este año no tendrá el encuentro decisivo.</p>
+                    <p class="panel-desc">Este recinto guarda algunos de los momentos más importantes de la historia del futbol mundial.</p>
+                    
                     <div class="resultados-box">
-                        <div class="res-item"><strong>1970:</strong> Brasil 4 - 1 Italia</div>
-                        <div class="res-item"><strong>1986:</strong> Argentina 3 - 2 Alemania Fed.</div>
+                        <!-- Tarjeta 1970 -->
+                        <div class="res-item final-1970">
+                            <div class="res-overlay">
+                                <strong>1970:</strong> Brasil 4 - 1 Italia
+                            </div>
+                        </div>
+                        <!-- Tarjeta 1986 -->
+                        <div class="res-item final-1986">
+                            <div class="res-overlay">
+                                <strong>1986:</strong> Argentina 3 - 2 Alemania Fed.
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div id="custom-viz-stage" class="ui-hidden">
                 
@@ -137,7 +151,7 @@
                 <div id="viz-rostros" class="viz-panel ui-hidden">
                     <div class="rostros-container">
                         <div class="hero-card">
-                            <img src="fotos/klose_gol.jpg" class="hero-bg" alt="Gol de Klose 2014" onerror="this.src='https://via.placeholder.com/600x300/151515/333333?text=Klose+Gol+Background'">
+                            <img src="fotos/klose_gol.png" class="hero-bg" alt="Gol de Klose 2014" onerror="this.src='https://via.placeholder.com/600x300/151515/333333?text=Klose+Gol+Background'">
                             <div class="hero-overlay">
                                 <img src="fotos/klose.png" class="hero-face" alt="Miroslav Klose" onerror="this.src='https://via.placeholder.com/150/222222/aaaaaa?text=Klose'">
                                 <div class="hero-data">
@@ -164,7 +178,7 @@
                                 <span class="p-goals">14</span>
                             </div>
                             <div class="player-card">
-                                <img src="fotos/fontaine.png" class="player-face" alt="Fontaine" onerror="this.src='https://via.placeholder.com/80/222222/aaaaaa?text=Fontaine'">
+                                <img src="fotos/Fontaine.png" class="player-face" alt="Fontaine" onerror="this.src='https://via.placeholder.com/80/222222/aaaaaa?text=Fontaine'">
                                 <img src="https://flagcdn.com/w20/fr.png" class="p-flag" alt="Francia">
                                 <h4>Just Fontaine</h4>
                                 <span class="p-goals">13</span>
@@ -220,7 +234,7 @@
                                 <div class="mini-goal-row"><span class="mg-year">Francia 1998</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="99.4" style="background: #e0e0e0;"></div></div><span class="mg-count">171</span></div>
                                 <div class="mini-goal-row"><span class="mg-year">Brasil 2014</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="99.4" style="background: #e0e0e0;"></div></div><span class="mg-count">171</span></div>
                                 <div class="mini-goal-row"><span class="mg-year">Rusia 2018</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="98.2" style="background: #e0e0e0;"></div></div><span class="mg-count">169</span></div>
-                                <div class="mini-goal-row"><span class="mg-year">Japón/Corea 2002</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="93.6" style="background: #e0e0e0;"></div></div><span class="mg-count">161</span></div>
+                                <div class="mini-goal-row"><span class="mg-year">Corea -<br>Japón 2002</span><div class="mg-bar-wrap"><div class="mg-bar" data-width="93.6" style="background: #e0e0e0;"></div></div><span class="mg-count">161</span></div>
                             </div>
                         </div>
 
@@ -271,7 +285,7 @@
                     <div class="club6-wrapper">
                         <!-- Lado Izquierdo: Messi -->
                         <div class="club-player">
-                            <img src="fotos/messi.png" class="full-body-img" alt="Lionel Messi">
+                            <img src="fotos/messi_entero.png" class="full-body-img" alt="Lionel Messi">
                             <div class="player-info-pill">
                                 <h3>Lionel Messi</h3>
                                 <img src="https://flagcdn.com/w40/ar.png" class="flag-rectangular" alt="Argentina">
@@ -286,7 +300,7 @@
 
                         <!-- Lado Derecho: Cristiano -->
                         <div class="club-player">
-                            <img src="fotos/ronaldo.png" class="full-body-img" alt="Cristiano Ronaldo">
+                            <img src="fotos/cristiano_entero.png" class="full-body-img" alt="Cristiano Ronaldo">
                             <div class="player-info-pill">
                                 <h3>Cristiano Ronaldo</h3>
                                 <img src="https://flagcdn.com/w40/pt.png" class="flag-rectangular" alt="Portugal">
@@ -351,7 +365,7 @@
                         <!-- Mitad Izquierda (Messi) -->
                         <div class="cerca-half">
                             <div class="player-header">
-                                <img src="fotos/messi.png" class="half-body-img" alt="Lionel Messi" onerror="this.src='https://via.placeholder.com/150/222222/aaaaaa?text=Messi'">
+                                <img src="fotos/messi_mitad.png" class="half-body-img" alt="Lionel Messi" onerror="this.src='https://via.placeholder.com/150/222222/aaaaaa?text=Messi'">
                                 <div class="player-info-pill">
                                     <h3>Lionel Messi</h3>
                                     <img src="https://flagcdn.com/w40/ar.png" class="flag-rectangular" alt="Argentina">
@@ -379,7 +393,7 @@
                         <!-- Mitad Derecha (CR7) -->
                         <div class="cerca-half">
                             <div class="player-header">
-                                <img src="fotos/ronaldo.png" class="half-body-img" alt="Cristiano Ronaldo" onerror="this.src='https://via.placeholder.com/150/222222/aaaaaa?text=CR7'">
+                                <img src="fotos/cristiano_mitad.png" class="half-body-img" alt="Cristiano Ronaldo" onerror="this.src='https://via.placeholder.com/150/222222/aaaaaa?text=CR7'">
                                 <div class="player-info-pill">
                                     <h3>Cristiano Ronaldo</h3>
                                     <img src="https://flagcdn.com/w40/pt.png" class="flag-rectangular" alt="Portugal">
@@ -510,7 +524,7 @@
             <div class="step" data-step="6">
                 <div class="step-wrap">
                     <div class="step-card">
-                        <h2 style="color: #f1c40f;">La ¿ventaja? de la localía</h2>
+                        <h2 style="color: #f1c40f;">¿La ventaja de la localía?</h2>
                         <p>En el Mundial, la localía no garantiza el éxito: solo seis de los 19 organizadores del certamen han alzado la copa. El último de ellos fue Francia, en 1998.</p>
                     </div>
                 </div>
@@ -525,11 +539,11 @@
                 </div>
             </div>
 
-            <div class="step" data-step="8">
+            <div class="step step-pushed-right" data-step="8">
                 <div class="step-wrap">
                     <div class="step-card">
                         <h2 style="color: #2ecc71;">Historia y legado</h2>
-                        <p>Ciudad de México es la única ciudad del planeta donde se han jugado dos finales del Mundial.<br><br>Este año, en la capital mexicana se disputarán cinco partidos, pero no el encuentro decisivo por el trofeo.</p>
+                        <p>Ciudad de México, dónde se encuentra el legendario Estadio Azteca, es la única ciudad del planeta donde se han jugado dos finales del Mundial.<br><br>Este año, en la capital mexicana se disputarán cinco partidos, pero no el encuentro decisivo por el trofeo.</p>
                     </div>
                 </div>
             </div>
@@ -548,7 +562,7 @@
                     <div class="step-card">
                         <h2 style="color: #f1c40f;">La historia se forja con goles</h2>
                         <p>Brasil, Argentina, Francia, Alemania e Italia son las naciones que más goles anotaron en la historia de los Mundiales.</p>
-                        <p style="margin-top: 15px;">El pentacampeón del mundo, Brasil, tiene el primer lugar absoluto, con una ventaja monumental de <strong>más de 85 goles</strong> sobre el segundo lugar.</p>
+                        <p style="margin-top: 15px;">El pentacampeón del mundo, Brasil, tiene el primer lugar absoluto, con una ventaja monumental de <strong>más de 85 goles</strong> sobre el segundo lugar, Argentina.</p>
                     </div>
                 </div>
             </div>
@@ -576,7 +590,7 @@
                     <div class="step-card">
                         <h2 style="color: #e74c3c;">Garra y agresividad</h2>
                         <p>Las tarjetas para sancionar faltas se incorporaron recién en 1966. Desde entonces, los árbitros del Mundial han sancionado a los jugadores con 2.517 tarjetas amarillas y 157 rojas.</p>
-                        <p style="margin-top: 15px;">Alemania 2006 fue el certamen más friccionado, donde se impusieron la mayor cantidad de amonestaciones de la historia.</p>
+                        <p style="margin-top: 15px;">Alemania 2006 fue el certamen más friccionado, donde se impusieron 304 tarjetas amarillas y 28 tarjetas rojas, la mayor cantidad de amonestaciones de la historia.</p>
                     </div>
                 </div>
             </div>
@@ -670,6 +684,13 @@
         </div>
     </footer>
 
+
+    <div id="nav-controls" class="ui-hidden">
+        <button id="btn-up" class="nav-btn" disabled>↑</button>
+        <button id="btn-down" class="nav-btn">↓</button>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
