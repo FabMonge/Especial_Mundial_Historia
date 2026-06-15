@@ -233,7 +233,7 @@
                                 </div>
                             </div>
                             <div class="pie-info">
-                                <h3>La efectividad de los 12 pasos</h3>
+                                <h3>La pena máxima</h3>
                                 <p>Pese a la tensión que generan, la vía penal representa una fracción muy pequeña de las anotaciones totales en el certamen.</p>
                                 <div class="pie-legend-box">
                                     <div class="p-leg-item"><div class="p-box" style="background: rgba(255,255,255,0.1);"></div> Jugada (92.1%)</div>
@@ -247,12 +247,193 @@
 
                 <div id="viz-tarjetas" class="viz-panel ui-hidden">
                     <div class="cards-container">
-                        <h3>Evolución de la indisciplina</h3>
+                        <h3 style="text-transform: uppercase;">Tarjetas Amarillas y Rojas en la historia de los Mundiales</h3>
                         <p class="cards-subtitle">Registro de tarjetas desde su implementación en Inglaterra 1966.</p>
+                        
                         <div id="cards-chart" class="cards-chart"></div>
+                        
                         <div class="cards-legend">
-                            <span class="c-leg-item"><div class="c-box bg-yellow"></div> Amarillas</span>
-                            <span class="c-leg-item"><div class="c-box bg-red"></div> Rojas</span>
+                            <span class="c-leg-item">
+                                <div class="c-line" style="background: #f1c40f; box-shadow: 0 0 8px rgba(241, 196, 15, 0.8);"></div> Amarillas
+                            </span>
+                            <span class="c-leg-item">
+                                <div class="c-line" style="background: #e74c3c; box-shadow: 0 0 8px rgba(231, 76, 60, 0.8);"></div> Rojas
+                            </span>
+                        </div>
+                        </div>
+                </div>
+                <!-- TÍTULO FLOTANTE -->
+                <div id="sticky-records-title" class="ui-hidden">Récords que podrían romperse</div>
+
+                
+                <!-- 15: CLUB 6 (VERSIÓN CUERPO ENTERO) -->
+                <div id="viz-club-6" class="viz-panel ui-hidden">
+                    <div class="club6-wrapper">
+                        <!-- Lado Izquierdo: Messi -->
+                        <div class="club-player">
+                            <img src="fotos/messi.png" class="full-body-img" alt="Lionel Messi">
+                            <div class="player-info-pill">
+                                <h3>Lionel Messi</h3>
+                                <img src="https://flagcdn.com/w40/ar.png" class="flag-rectangular" alt="Argentina">
+                            </div>
+                        </div>
+                        
+                        <!-- Centro: 6 Mundiales Jugados -->
+                        <div class="club-center-badge">
+                            <div class="club-number glow-gold">6</div>
+                            <div class="club-text">Mundiales<br>Jugados</div>
+                        </div>
+
+                        <!-- Lado Derecho: Cristiano -->
+                        <div class="club-player">
+                            <img src="fotos/ronaldo.png" class="full-body-img" alt="Cristiano Ronaldo">
+                            <div class="player-info-pill">
+                                <h3>Cristiano Ronaldo</h3>
+                                <img src="https://flagcdn.com/w40/pt.png" class="flag-rectangular" alt="Portugal">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="viz-mas-partidos" class="viz-panel ui-hidden">
+                    <div class="mas-partidos-container" style="max-width: 950px;">
+                        <h3 style="text-transform: uppercase;">El impacto del nuevo formato (48 Equipos)</h3>
+                        
+                        <div class="comparison-grid" style="margin-bottom: 30px;">
+                            <div class="comp-col">
+                                <h4>Equipos Clasificados</h4>
+                                <div class="comp-bars-stage" style="height: 200px;">
+                                    <div class="comp-bar-wrap"><div class="comp-bar bg-old" data-h="50%"></div><span class="comp-val">32</span><span class="comp-label">Hasta 2022</span></div>
+                                    <div class="comp-bar-wrap"><div class="comp-bar bg-new" data-h="100%"></div><span class="comp-val glow-cyan">48</span><span class="comp-label">2026</span></div>
+                                </div>
+                            </div>
+                            <div class="comp-col">
+                                <h4>Total de Partidos</h4>
+                                <div class="comp-bars-stage" style="height: 200px;">
+                                    <div class="comp-bar-wrap"><div class="comp-bar bg-old" data-h="40%"></div><span class="comp-val">64</span><span class="comp-label">Hasta 2022</span></div>
+                                    <div class="comp-bar-wrap"><div class="comp-bar bg-new" data-h="100%"></div><span class="comp-val glow-cyan">104</span><span class="comp-label">2026</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-grid grid-3-cols" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px;">
+                            <div class="comp-col">
+                                <h4>Promedio Amarillas*</h4>
+                                <div class="comp-bars-stage" style="height: 180px;">
+                                    <div class="comp-bar-wrap"><div class="comp-bar" style="background: rgba(241, 196, 15, 0.4);" data-h="50%"></div><span class="comp-val" style="color:#f1c40f; font-size: 1.5rem;">240</span><span class="comp-label">32 eq.</span></div>
+                                    <div class="comp-bar-wrap"><div class="comp-bar bg-new" data-h="100%"></div><span class="comp-val glow-cyan" style="font-size: 2rem;">?</span><span class="comp-label">2026</span></div>
+                                </div>
+                            </div>
+                            <div class="comp-col">
+                                <h4>Promedio Rojas*</h4>
+                                <div class="comp-bars-stage" style="height: 180px;">
+                                    <div class="comp-bar-wrap"><div class="comp-bar" style="background: rgba(231, 76, 60, 0.4);" data-h="50%"></div><span class="comp-val" style="color:#e74c3c; font-size: 1.5rem;">14.2</span><span class="comp-label">32 eq.</span></div>
+                                    <div class="comp-bar-wrap"><div class="comp-bar bg-new" data-h="100%"></div><span class="comp-val glow-cyan" style="font-size: 2rem;">?</span><span class="comp-label">2026</span></div>
+                                </div>
+                            </div>
+                            <div class="comp-col">
+                                <h4>Promedio Goles*</h4>
+                                <div class="comp-bars-stage" style="height: 180px;">
+                                    <div class="comp-bar-wrap"><div class="comp-bar bg-old" data-h="50%"></div><span class="comp-val" style="font-size: 1.5rem;">162</span><span class="comp-label">32 eq.</span></div>
+                                    <div class="comp-bar-wrap"><div class="comp-bar bg-new" data-h="100%"></div><span class="comp-val glow-cyan" style="font-size: 2rem;">?</span><span class="comp-label">2026</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="footnote" style="text-align: center; margin-top: 25px; border-top: none;">* Promedio en Mundiales con formato de 32 equipos (Francia 1998 a Catar 2022).</p>
+                    </div>
+                </div>
+
+                <!-- 17: MESSI VS CR7 -->
+                <!-- 17: MESSI VS CR7 (CUERPO ENTERO Y HORIZONTAL) -->
+                <div id="viz-cerca-trono" class="viz-panel ui-hidden">
+                    <div class="cerca-trono-container">
+                        
+                        <!-- Mitad Izquierda (Messi) -->
+                        <div class="cerca-half">
+                            <div class="player-header">
+                                <img src="fotos/messi.png" class="half-body-img" alt="Lionel Messi" onerror="this.src='https://via.placeholder.com/150/222222/aaaaaa?text=Messi'">
+                                <div class="player-info-pill">
+                                    <h3>Lionel Messi</h3>
+                                    <img src="https://flagcdn.com/w40/ar.png" class="flag-rectangular" alt="Argentina">
+                                </div>
+                            </div>
+                            
+                            <h4 class="sub-chart-title">Goles anotados en mundiales</h4>
+                            
+                            <div class="mini-goals-box" style="padding: 0 15px;">
+                                <div class="goal-row">
+                                    <div class="goal-track">
+                                        <div class="goal-info"><span style="color:var(--text-muted);">Miroslav Klose</span> <span class="goal-count" style="color:var(--text-muted);">16</span></div>
+                                        <div class="goal-bar-bg"><div class="goal-bar-fill klose-bar" data-width="100" style="background-color: var(--text-muted);"></div></div>
+                                    </div>
+                                </div>
+                                <div class="goal-row">
+                                    <div class="goal-track">
+                                        <div class="goal-info"><span style="color:#3498db; font-weight:700;">Lionel Messi</span> <span class="goal-count">13</span></div>
+                                        <div class="goal-bar-bg"><div class="goal-bar-fill messi-bar" data-width="81.25" style="background-color: #3498db; box-shadow: 0 0 10px #3498db;"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mitad Derecha (CR7) -->
+                        <div class="cerca-half">
+                            <div class="player-header">
+                                <img src="fotos/ronaldo.png" class="half-body-img" alt="Cristiano Ronaldo" onerror="this.src='https://via.placeholder.com/150/222222/aaaaaa?text=CR7'">
+                                <div class="player-info-pill">
+                                    <h3>Cristiano Ronaldo</h3>
+                                    <img src="https://flagcdn.com/w40/pt.png" class="flag-rectangular" alt="Portugal">
+                                </div>
+                            </div>
+
+                            <h4 class="sub-chart-title">Campeonatos Mundiales en los que anotó</h4>
+                            
+                            <div class="cr7-checklist horizontal-checklist">
+                                <div class="check-item"><div class="check-box checked">✔</div> 2006</div>
+                                <div class="check-item"><div class="check-box checked">✔</div> 2010</div>
+                                <div class="check-item"><div class="check-box checked">✔</div> 2014</div>
+                                <div class="check-item"><div class="check-box checked">✔</div> 2018</div>
+                                <div class="check-item"><div class="check-box checked">✔</div> 2022</div>
+                                <div class="check-item pending-check"><div class="check-box pending glow-gold">?</div> <span style="color:#f1c40f;">2026</span></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 18 y 19: PERÚ -->
+                <div id="viz-peru" class="viz-panel ui-hidden">
+                    <div class="peru-chart-container">
+                        <h3>El historial de la Blanquirroja</h3>
+                        
+                        <h4 class="sub-chart-title" style="margin-top: 15px;">Resultados de Partidos</h4>
+                        
+                        <div class="cards-legend" style="margin-top: 5px; margin-bottom: 25px;">
+                            <span class="c-leg-item"><div class="c-box bg-w"></div> Victorias</span>
+                            <span class="c-leg-item"><div class="c-box bg-d"></div> Empates</span>
+                            <span class="c-leg-item"><div class="c-box bg-l"></div> Derrotas</span>
+                        </div>
+                        
+                        <div id="peru-wdl-grid" class="peru-bars-grid" style="height: 140px;"></div>
+                        
+                        <h4 class="sub-chart-title" style="margin-top: 35px;">Goles Anotados</h4>
+                        <div id="peru-goals-list" class="peru-goals-list"></div>
+                    </div>
+                </div>
+
+                <!-- 19: GOLEADORES DE PERÚ (DISEÑO PÓSTER CON CUBILLAS) -->
+                <div id="viz-peru-goleadores" class="viz-panel ui-hidden">
+                    <div class="peru-hero-layout">
+                        <!-- Columna Izquierda: El Héroe -->
+                        <div class="hero-image-col">
+                            <!-- Asegúrate de tener una imagen PNG sin fondo llamada cubillas.png -->
+                            <img src="fotos/cubillas.png" class="cubillas-img" alt="Teófilo Cubillas" onerror="this.src='https://via.placeholder.com/350x550/222222/aaaaaa?text=Cubillas'">
+                        </div>
+                        
+                        <!-- Columna Derecha: El Ranking -->
+                        <div class="goals-container" style="flex: 1; max-width: 480px; padding: 25px 35px; margin: 0;">
+                            <h3 style="text-transform: uppercase; font-size: 1.4rem; text-shadow: 0 0 10px rgba(211, 47, 47, 0.5);">Goleadores Nacionales</h3>
+                            <div id="peru-goleadores-list"></div>
                         </div>
                     </div>
                 </div>
@@ -357,7 +538,7 @@
                 <div class="step-wrap">
                     <div class="step-card">
                         <h2>Una imposibilidad estadística</h2>
-                        <p>Solo el 0.9% de los futbolistas profesionales tienen la oportunidad de participar en la Copa del Mundo. <br><br>En toda la historia, solo <strong>XXXX</strong> deportistas lo han conseguido.</p>
+                        <p>Solo el 0.9% de los futbolistas profesionales tienen la oportunidad de participar en la Copa del Mundo. <br><br>En toda la historia, solo <strong>9509</strong> deportistas lo han conseguido.</p>
                     </div>
                 </div>
             </div>
@@ -400,8 +581,94 @@
                 </div>
             </div>
 
+            <div class="step step-centered" data-step="14">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2 style="color: #e5a93b;">Récords que podrían romperse</h2>
+                        <p style="font-size: 1.3rem;">El 2026 será el último Mundial de los dos astros más mediáticos del fútbol contemporáneo: Lionel Messi y Cristiano Ronaldo. Además, en este torneo podrían romperse marcas históricas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="15">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2>El club de los seis Mundiales</h2>
+                        <p>Para un futbolista, ser convocado por su selección para un Mundial es un honor, pero defender la camiseta de su país por más de dos décadas le asegura un espacio en la historia.</p>
+                        <p style="margin-top: 15px;">Este Mundial podría ser el primero en el que futbolistas con un rol protagónico en sus equipos jueguen seis Copas del Mundo consecutivas.</p>
+                        <p style="margin-top: 15px;">Si suman un solo minuto de juego en este torneo, se convertirán en los primeros futbolistas de toda la historia en jugar en seis Mundiales (2006, 2010, 2014, 2018, 2022 y 2026). A la fecha, el récord vigente es de cinco Mundiales.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="16">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2 style="color: #00ffcc;">Más partidos que nunca</h2>
+                        <p>Debido a que esta Copa del Mundo se juega con 48 equipos, habrán 104 partidos, en lugar de los 64 del formato anterior. Esto aumentará el número de goles y amonestaciones. El campeonato de este año podría romper ambos récords.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="17">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2>Cerca del trono</h2>
+                        <p>Messi, el ídolo argentino, está a solo tres goles de alcanzar a Klose, el máximo anotador en la historia de la Copa del Mundo.</p>
+                        <p style="margin-top: 15px;">Por otro lado, Cristiano Ronaldo es el único jugador en la historia que ha anotado en cinco Mundiales distintos. Si logra anotar al menos un gol en esta edición, romperá su propia marca.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="18">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2 style="color: #fff; text-shadow: 0 0 10px #d32f2f;">Perú en la Copa del Mundo</h2>
+                        <p>La selección peruana solo ha competido en cinco de los 23 Mundiales. Su mejor participación, de acuerdo a las estadísticas, fue México 70.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" data-step="19">
+                <div class="step-wrap">
+                    <div class="step-card">
+                        <h2 style="color: #fff; text-shadow: 0 0 10px #d32f2f;">El máximo goleador nacional</h2>
+                        <p>Teófilo Cubillas domina el ranking peruano con 10 tantos. Su marca será difícilmente superada en el futuro cercano.</p>
+                    </div>
+                </div>
+            </div>
         </article>
     </main>
+
+    <footer class="special-credits-black">    
+        <h3 class="credits-main-title">Créditos</h3>
+        
+        <div class="credits-wrapper">
+            <div class="credit-block">
+                <span class="credit-role">Investigación</span>
+                <span class="credit-name">Ariana Lira | Gino Alva | Jorge Falen | Karla Kennedy | Fabrizio Monge</span>
+            </div>
+            <div class="credit-block">
+                <span class="credit-role">Diseño y desarrollo</span>
+                <span class="credit-name">Fabrizio Monge</span>
+            </div>
+
+            <div class="credit-block">
+                <span class="credit-role">Apoyo técnico</span>
+                <span class="credit-name">Karla Kennedy</span>
+            </div>
+
+            <div class="credit-block">
+                <span class="credit-role">Edición General</span>
+                <span class="credit-name">Ariana Lira | Gino Alva</span>
+            </div>
+        </div>
+
+        <div class="credits-logo-container">
+            <img src="fotos/logo-comercio-blanco.png" alt="Logo El Comercio" onerror="this.style.display='none'">
+            <div class="copyright-text">©2026 Empresa Editora El Comercio. Todos los derechos reservados</div>
+        </div>
+    </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>

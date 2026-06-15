@@ -174,6 +174,17 @@ const DATA = {
         { y: 2006, amarillo: 304, rojo: 28 }, { y: 2010, amarillo: 242, rojo: 16 },
         { y: 2014, amarillo: 181, rojo: 10 }, { y: 2018, amarillo: 219, rojo: 4 },
         { y: 2022, amarillo: 221, rojo: 4 }
+    ],
+    peru_wc: [
+        { y: 1930, w: 0, d: 0, l: 2, g: 1 }, { y: 1970, w: 2, d: 0, l: 2, g: 9 },
+        { y: 1978, w: 2, d: 1, l: 3, g: 7 }, { y: 1982, w: 0, d: 2, l: 1, g: 2 },
+        { y: 2018, w: 1, d: 0, l: 2, g: 2 }
+    ],
+    peru_goleadores: [
+        { n: 'Teófilo Cubillas', g: 10 }, { n: 'Alberto Gallardo', g: 2 }, { n: 'L. de Souza Ferreira', g: 1 },
+        { n: 'Héctor Chumpitaz', g: 1 }, { n: 'José Velásquez', g: 1 }, { n: 'César Cueto', g: 1 },
+        { n: 'Roberto Chale', g: 1 }, { n: 'Guillermo la Rosa', g: 1 }, { n: 'Rubén Díaz', g: 1 },
+        { n: 'Paolo Guerrero', g: 1 }, { n: 'André Carrillo', g: 1 }
     ]
 };
 
@@ -428,9 +439,9 @@ function procesarPasoNarrativo(paso) {
 
     // 1. APAGAR TODOS LOS PANELES UI (Método limpio y optimizado)
     const paneles = [
-        'panel-extintos', 'panel-mexico', 
-        'viz-imposibilidad', 'viz-goles', 
-        'viz-rostros', 'viz-tiempos', 'viz-tarjetas'
+        'panel-extintos', 'panel-mexico', 'viz-imposibilidad', 'viz-goles', 
+        'viz-rostros', 'viz-tiempos', 'viz-tarjetas', 'viz-club-6', 
+        'viz-mas-partidos', 'viz-cerca-trono', 'viz-peru', 'viz-peru-goleadores'
     ];
     paneles.forEach(id => {
         const el = document.getElementById(id);
@@ -454,6 +465,16 @@ function procesarPasoNarrativo(paso) {
     if(paso === 11) document.getElementById('viz-rostros').classList.remove('ui-hidden');
     if(paso === 12) document.getElementById('viz-tiempos').classList.remove('ui-hidden');
     if(paso === 13) document.getElementById('viz-tarjetas').classList.remove('ui-hidden');
+    const stickyTitle = document.getElementById('sticky-records-title');
+    if (stickyTitle) {
+        if (paso >= 15 && paso <= 17) stickyTitle.classList.remove('ui-hidden');
+        else stickyTitle.classList.add('ui-hidden');
+    }
+    if(paso === 15) document.getElementById('viz-club-6').classList.remove('ui-hidden');
+    if(paso === 16) document.getElementById('viz-mas-partidos').classList.remove('ui-hidden');
+    if(paso === 17) document.getElementById('viz-cerca-trono').classList.remove('ui-hidden');
+    if(paso === 18) document.getElementById('viz-peru').classList.remove('ui-hidden');
+    if(paso === 19) document.getElementById('viz-peru-goleadores').classList.remove('ui-hidden');
 
     // ============================================
     // ANIMACIONES ESPECÍFICAS DE GSAP (ESCENAS SIN MAPA)
@@ -503,13 +524,44 @@ function procesarPasoNarrativo(paso) {
     }
     
     // Paso 13: Gráfico Disruptivo de Tarjetas (Stem Chart)
-    gsap.killTweensOf(".stem-y, .stem-r");
+    gsap.killTweensOf(".line-path, .dot-yellow, .dot-red");
     if(paso === 13) {
-        // La animación "back.out" hace que las líneas salten un poco hacia arriba y reboten suavemente
-        gsap.to(".stem-y, .stem-r", { height: function(i, t) { return t.getAttribute("data-height") + "%"; }, duration: 1.5, ease: "back.out(1.2)", stagger: 0.05 });
+        // Magia GSAP: Anima el "dibujado" de las líneas SVG
+        gsap.fromTo(".line-path", 
+            { strokeDasharray: 2000, strokeDashoffset: 2000 }, 
+            { strokeDashoffset: 0, duration: 2, ease: "power2.inOut" }
+        );
+        // Aparecen los puntos de datos suavemente al final
+        gsap.fromTo([".dot-yellow", ".dot-red"], 
+            { attr: { r: 0 }, opacity: 0 }, 
+            { attr: { r: 5 }, opacity: 1, duration: 0.5, stagger: 0.05, delay: 0.8 }
+        );
     } else {
-        gsap.set(".stem-y, .stem-r", { height: "0%" });
+        gsap.set(".line-path", { strokeDashoffset: 2000, strokeDasharray: 2000 });
+        gsap.set([".dot-yellow", ".dot-red"], { attr: { r: 0 }, opacity: 0 });
     }
+
+    gsap.killTweensOf(".comp-bar, .klose-bar, .messi-bar, .check-item, .peru-anim-bar, .peru-anim-bar-w, .gol-peru-bar");
+
+    if(paso === 16) gsap.fromTo(".comp-bar", { height: "0%" }, { height: (i, t) => t.getAttribute("data-h"), duration: 1.2, ease: "power3.out", stagger: 0.1 });
+    else gsap.set(".comp-bar", { height: "0%" });
+
+    if(paso === 17) {
+        gsap.fromTo(".klose-bar, .messi-bar", { width: "0%" }, { width: (i, t) => t.getAttribute("data-width") + "%", duration: 1.2, ease: "power3.out", stagger: 0.2 });
+        gsap.fromTo(".check-item", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, ease: "back.out(1.5)" });
+    } else { gsap.set(".klose-bar, .messi-bar", { width: "0%" }); gsap.set(".check-item", { opacity: 0, y: 20 }); }
+
+    // PASO 18 AHORA ANIMA HEIGHT Y WIDTH
+    if(paso === 18) {
+        gsap.fromTo(".peru-anim-bar", { height: "0%" }, { height: (i, t) => t.getAttribute("data-h"), duration: 1.5, ease: "elastic.out(1, 0.7)", stagger: 0.05 });
+        gsap.fromTo(".peru-anim-bar-w", { width: "0%" }, { width: (i, t) => t.getAttribute("data-w"), duration: 1.2, ease: "power3.out", stagger: 0.1 });
+    } else { 
+        gsap.set(".peru-anim-bar", { height: "0%" }); 
+        gsap.set(".peru-anim-bar-w", { width: "0%" }); 
+    }
+
+    if(paso === 19) gsap.fromTo(".gol-peru-bar", { width: "0%" }, { width: (i, t) => t.getAttribute("data-width") + "%", duration: 1.2, ease: "power3.out", stagger: 0.1 });
+    else gsap.set(".gol-peru-bar", { width: "0%" });
 
     // ============================================
     // CONTROL DE MAPA Y VECTORES (Solo si el mapa es visible)
@@ -638,34 +690,138 @@ DATA.tarjetas_historicas = [
     { y: 2022, amarillo: 221, rojo: 4 }
 ];
 
-// 2. Función que dibuja el gráfico Stem Chart en HTML
+
+// 2. Función que dibuja el gráfico de Líneas de Doble Eje Y (SVG Nativo)
 function generarGraficoTarjetas() {
     const contenedor = document.getElementById('cards-chart');
-    if (!contenedor) return; // Evita errores si el HTML aún no carga
-    
-    contenedor.innerHTML = '';
-    const maxAmarillas = 304; // Alemania 2006 es el techo (100% de altura)
-    
-    DATA.tarjetas_historicas.forEach(d => {
-        // Cálculo matemático de altura (porcentaje)
-        const pAmarillo = (d.amarillo / maxAmarillas) * 100;
-        const pRojo = (d.rojo / maxAmarillas) * 100; // Usamos el mismo divisor para respetar la escala
+    if (!contenedor) return; 
 
-        const groupHTML = `
-            <div class="card-stem-group">
-                <div class="card-stem-wrapper">
-                    <div class="stem-y" data-height="${pAmarillo}" style="height: 0%;">
-                        <div class="card-top bg-yellow"></div>
-                    </div>
-                    <div class="stem-r" data-height="${pRojo}" style="height: 0%;">
-                        <div class="card-top bg-red"></div>
-                    </div>
-                </div>
-                <div class="card-year">${d.y}</div>
-            </div>
+    contenedor.innerHTML = '';
+    
+    // Escalas Independientes para los dos ejes
+    const maxYellow = 350; // Eje izquierdo (Amarillas)
+    const maxRed = 30;     // Eje derecho (Rojas)
+    
+    const width = 1000;
+    const height = 300;
+    const dataLen = DATA.tarjetas_historicas.length;
+
+    // Vectores SVG
+    let pathYellow = `M 0,${height - (DATA.tarjetas_historicas[0].amarillo / maxYellow) * height}`;
+    let pathRed = `M 0,${height - (DATA.tarjetas_historicas[0].rojo / maxRed) * height}`;
+
+    let dotsHTML = '';
+    let hoverZonesHTML = '';
+    let xAxisHTML = '';
+
+    DATA.tarjetas_historicas.forEach((d, i) => {
+        const x = (i / (dataLen - 1)) * width;
+        const xPercent = (i / (dataLen - 1)) * 100;
+        const yYellow = height - (d.amarillo / maxYellow) * height;
+        const yRed = height - (d.rojo / maxRed) * height;
+
+        if (i > 0) {
+            pathYellow += ` L ${x},${yYellow}`;
+            pathRed += ` L ${x},${yRed}`;
+        }
+
+        // Círculos vectoriales (puntos)
+        dotsHTML += `
+            <circle cx="${x}" cy="${yYellow}" r="5" class="dot-yellow" />
+            <circle cx="${x}" cy="${yRed}" r="5" class="dot-red" />
         `;
-        contenedor.innerHTML += groupHTML;
+
+        // Zonas de Hover HTML (Invisibles, sobre el SVG para tooltips perfectos)
+        hoverZonesHTML += `
+            <div class="hover-zone tooltip-trigger" data-tooltip="Edición ${d.y}: ${d.amarillo} Tarjetas amarillas" style="left: ${xPercent}%; top: ${(yYellow/height)*100}%;"></div>
+            <div class="hover-zone tooltip-trigger" data-tooltip="Edición ${d.y}: ${d.rojo} Tarjetas rojas" style="left: ${xPercent}%; top: ${(yRed/height)*100}%;"></div>
+        `;
+
+        // Etiquetas del Eje X (Años)
+        xAxisHTML += `<div class="x-label" style="left: ${xPercent}%;">${d.y}</div>`;
     });
+
+    // Ensamblaje del DOM
+    const svgHTML = `
+        <svg viewBox="-10 -10 1020 320" class="dual-line-svg" preserveAspectRatio="none">
+            <line x1="0" y1="300" x2="1000" y2="300" class="grid-line" />
+            <line x1="0" y1="150" x2="1000" y2="150" class="grid-line" />
+            <line x1="0" y1="0" x2="1000" y2="0" class="grid-line" />
+
+            <path d="${pathYellow}" class="line-path line-yellow" />
+            <path d="${pathRed}" class="line-path line-red" />
+            ${dotsHTML}
+        </svg>
+    `;
+
+    const finalHTML = `
+        <div class="dual-chart-wrapper">
+            <div class="y-axis left-axis"><span>350</span><span>175</span><span>0</span></div>
+            
+            <div class="chart-core">
+                ${svgHTML}
+                <div class="html-tooltip-overlay">${hoverZonesHTML}</div>
+                <div class="x-axis-container">${xAxisHTML}</div>
+            </div>
+            
+            <div class="y-axis right-axis"><span>30</span><span>15</span><span>0</span></div>
+        </div>
+    `;
+
+    contenedor.innerHTML = finalHTML;
 }
-// Ejecutamos la creación del grid al inicio
 generarGraficoTarjetas();
+
+function generarGraficosPeru() {
+    const wdlGrid = document.getElementById('peru-wdl-grid');
+    const goalsList = document.getElementById('peru-goals-list'); // Nuevo ID para horizontales
+    
+    if(wdlGrid && goalsList) {
+        let htmlWDL = '';
+        let htmlGoals = '';
+        const maxMatches = 4; 
+        const maxGoals = 10;  
+        
+        DATA.peru_wc.forEach(d => {
+            // HTML para Resultados (Columnas Verticales)
+            htmlWDL += `
+                <div class="peru-year-group">
+                    <div class="peru-wdl-wrap">
+                        <div class="p-bar bg-w peru-anim-bar tooltip-trigger" data-h="${(d.w/maxMatches)*100}%" data-tooltip="${d.w} Victorias"><span class="p-val">${d.w > 0 ? d.w : ''}</span></div>
+                        <div class="p-bar bg-d peru-anim-bar tooltip-trigger" data-h="${(d.d/maxMatches)*100}%" data-tooltip="${d.d} Empates"><span class="p-val">${d.d > 0 ? d.d : ''}</span></div>
+                        <div class="p-bar bg-l peru-anim-bar tooltip-trigger" data-h="${(d.l/maxMatches)*100}%" data-tooltip="${d.l} Derrotas"><span class="p-val">${d.l > 0 ? d.l : ''}</span></div>
+                    </div>
+                    <div class="peru-axis-year">${d.y}</div>
+                </div>`;
+                
+            // HTML para Goles (Barras Horizontales)
+            htmlGoals += `
+                <div class="peru-goal-row-h">
+                    <span class="peru-year-label-h">${d.y}</span>
+                    <div class="peru-bar-bg-h">
+                        <div class="p-bar-h bg-g peru-anim-bar-w tooltip-trigger" data-w="${(d.g/maxGoals)*100}%" data-tooltip="${d.g} Goles">
+                            <span class="p-val-h" style="color:#000;">${d.g > 0 ? d.g : ''}</span>
+                        </div>
+                    </div>
+                </div>`;
+        });
+        wdlGrid.innerHTML = htmlWDL;
+        goalsList.innerHTML = htmlGoals;
+    }
+
+    const list = document.getElementById('peru-goleadores-list');
+    if(list) {
+        let htmlList = '';
+        DATA.peru_goleadores.forEach(p => {
+            htmlList += `
+            <div class="goal-row" style="margin-bottom: 12px;">
+                <div class="goal-track">
+                    <div class="goal-info"><span class="goal-country">${p.n}</span> <span class="goal-count">${p.g}</span></div>
+                    <div class="goal-bar-bg"><div class="goal-bar-fill gol-peru-bar" data-width="${(p.g/10)*100}" style="background-color: #d32f2f;"></div></div>
+                </div>
+            </div>`;
+        });
+        list.innerHTML = htmlList;
+    }
+}
+generarGraficosPeru();
