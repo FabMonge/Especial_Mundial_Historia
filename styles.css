@@ -225,16 +225,12 @@ path.leaflet-interactive { transition: fill 0.8s ease, fill-opacity 0.8s ease, s
 .city-pin-nueva { width: 10px; height: 10px; background-color: #00ffcc; border-radius: 50%; box-shadow: 0 0 8px #00ffcc, 0 0 15px #00ffcc; border: 1.5px solid #fff; transition: all 0.5s; z-index: 500 !important; }
 .city-pin-mexico { width: 18px; height: 18px; background-color: #2ecc71; border-radius: 50%; box-shadow: 0 0 15px #2ecc71, 0 0 30px #2ecc71; border: 2px solid #fff; z-index: 1000 !important; }
 
-@media (min-width: 769px) {
-    .step-pushed-right .step-wrap { transform: translateX(25px); }
-}
-
 /* =========================================
    5. NAVEGACIÓN Y TARJETAS SCROLL
    ========================================= */
 #scroll-texts { position: relative; width: 35%; margin-left: auto; z-index: 3000; pointer-events: none; }
 .step { height: 100vh; display: flex; align-items: center; padding: 0 40px; }
-.step-wrap { width: 100%; opacity: 0.2; display: flex; flex-direction: column; gap: 20px; }
+.step-wrap { width: 100%; opacity: 0.2; display: flex; flex-direction: column; gap: 0px; }
 .step-card { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); padding: 35px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); opacity: 1 !important; pointer-events: auto; width: 100%; box-sizing: border-box; }
 .step-card h2 { font-size: 2rem; margin-bottom: 15px; color: #fff; line-height: 1.1; }
 .step-card p { font-size: 1.1rem; line-height: 1.6; color: var(--text-muted); margin: 0; }
@@ -265,6 +261,7 @@ path.leaflet-interactive { transition: fill 0.8s ease, fill-opacity 0.8s ease, s
 }
 
 .viz-panel {
+
     grid-column: 2; /* Forzamos a que los gráficos vivan en la columna del medio (55%) */
     grid-row: 1;
     
@@ -311,13 +308,14 @@ path.leaflet-interactive { transition: fill 0.8s ease, fill-opacity 0.8s ease, s
 /* =========================================
    9. VIZ: ROSTROS HISTÓRICOS (KLOSE)
    ========================================= */
-.rostros-container { width: 100%; display: flex; flex-direction: column; gap: 20px; }
+.rostros-container { width: 100%; display: flex; flex-direction: column; gap: 5px; }
 .hero-card { position: relative; width: 100%; height: 220px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(241, 196, 15, 0.4); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
 .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.8; filter: grayscale(10%); transition: 0.5s; }
 
 .hero-card:hover .hero-bg { opacity: 1; filter: grayscale(0%); transform: scale(1.05); }
 
-.hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 40%, transparent 100%); display: flex; align-items: center; padding: 0 30px; gap: 20px; }
+.hero-overlay { position: absolute;
+     inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 40%, transparent 100%); display: flex; align-items: center; padding: 0 30px; gap: 20px; }
 
 .hero-face { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid #f1c40f; box-shadow: 0 0 20px rgba(241, 196, 15, 0.5); }
 .hero-data { display: flex; flex-direction: column; gap: 5px; }
@@ -567,61 +565,6 @@ path.leaflet-interactive { transition: fill 0.8s ease, fill-opacity 0.8s ease, s
 .credit-role { font-size: 0.95rem; color: var(--text-muted); }
 .credit-role strong { color: #fff; text-transform: uppercase; font-size: 0.85rem; margin-right: 10px; }
 
-
-
-
-/* =========================================
-   12. MEDIA QUERIES (MÓVILES)
-   ========================================= */
-@media (max-width: 768px) {
-    #scroll-texts { width: 100%; }
-    .step { padding: 0 20px; align-items: flex-end; padding-bottom: 10vh; height: 100vh; }
-    .bottom-legend { width: 85%; bottom: 3%; left: 5%; padding: 15px; }
-    .nav-btn { width: 40px; height: 40px; font-size: 1rem; }
-    .debutantes-list { grid-template-columns: 1fr; }
-    .center-panel, .side-panel { left: 50%; transform: translate(-50%, -50%); width: 90%; }
-    
-    #custom-viz-stage {
-        grid-template-columns: 100%; 
-        padding-bottom: 25vh; 
-    }
-    .comparison-grid, .grid-3-cols { grid-template-columns: 1fr !important; gap: 30px; }
-    .viz-panel { width: 90%; }
-    .stats-massive { flex-direction: column; gap: 20px; padding: 20px; }
-    .stat-divider { width: 80%; height: 2px; }
-    .stat-number { font-size: 3rem; }
-    #waffle-grid { grid-template-columns: repeat(10, 1fr); gap: 4px;}
-    .waffle-dot { width: 12px; height: 12px; }
-    .goals-container { padding: 25px 20px; }
-    .goal-row { gap: 12px; }
-    .goal-country { font-size: 0.9rem; }
-    .goal-count { font-size: 1.1rem; }
-    
-    .dashboard-grid { grid-template-columns: 1fr; gap: 15px;}
-    .pie-layout { flex-direction: column; text-align: center; gap: 20px; }
-    .pie-legend-box { justify-content: center; }
-    .tg-number { font-size: 2.5rem; }
-    .t-perc { font-size: 1.3rem; }
-    
-    .other-players { grid-template-columns: repeat(2, 1fr); }
-    .card-year { font-size: 0.6rem; bottom: -20px; }
-    .card-top { width: 8px; height: 12px; }
-    .step.step-centered { align-items: center; padding-bottom: 0; width: 100%; margin-left: 0; }
-
-    /* Ajustes móviles para los jugadores de cuerpo entero */
-    .club6-wrapper { gap: 10px; margin-top: 0; }
-    .full-body-img { max-height: 35vh; }
-    .club-number { font-size: 7rem; }
-    .club-text { font-size: 1rem; }
-    .player-info-pill { padding: 6px 12px; gap: 8px; }
-    .player-info-pill h3 { font-size: 0.85rem; }
-    /* Ajuste móvil para el póster de Cubillas */
-    .peru-hero-layout { flex-direction: column; align-items: center; gap: 0; }
-    .cubillas-img { max-height: 35vh; margin-bottom: -20px; z-index: 10; position: relative; }
-    #viz-peru-goleadores .goals-container { padding: 30px 20px 20px 20px !important; z-index: 1; position: relative; margin-top: 0; }
-    
-}
-
 /* =========================================
    16. CONTROLES DE NAVEGACIÓN FLOTANTES
    ========================================= */
@@ -698,11 +641,313 @@ path.leaflet-interactive { transition: fill 0.8s ease, fill-opacity 0.8s ease, s
     margin-top:12px;
 }
 
+
+/* =========================================
+   12. MEDIA QUERIES (MÓVILES - ARQUITECTURA FINAL)
+   ========================================= */
 @media (max-width: 768px) {
-    .peru-poster-layout { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr; }
+    /* 1. EL TRUCO DE SUPERPOSICIÓN PERFECTA */
+    #gsap-pin-container { display: block !important; width: 100%; }
+    #map-stage { width: 100% !important; height: 100vh !important; z-index: 10; }
+    #scroll-texts { width: 100% !important; margin: 0 !important; padding: 0 !important; z-index: 3000; position: relative; margin-top: -100vh !important; }
+
+    /* 2. ELIMINAR EL PASO 7 EN MÓVIL POR COMPLETO (IMAGEN 3) */
+    .step[data-step="7"] { display: none !important; height: 0 !important; overflow: hidden !important; pointer-events: none !important; margin: 0 !important; padding: 0 !important; }
+    
+    /* 2. VISUALIZACIONES (Ahora sí se verán, ancladas en la mitad superior) */
+    #custom-viz-stage { 
+        display: flex !important; 
+        flex-direction: column;
+        align-items: center; 
+        justify-content: center; 
+        height: 40vh !important; /* Viven estrictamente en el 52% de arriba */
+        top: 0;
+        padding: 10px;
+        box-sizing: border-box;
+        padding-top: 10px !important; /* Empujamos el contenido hacia abajo para que respire mejor */
+    }
+    .viz-panel { 
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        max-height: 50vh; width: 100%; padding: 0; justify-content: center; gap: 10px; padding-top: 75px !important;}
+        
+
+    /* 3. CAJA NEGRA DINÁMICA (Abraza al texto y toca el fondo exacto de la pantalla) */
+    .step { height: 100vh; display: flex; align-items: flex-end; justify-content: center; padding: 0; pointer-events: none; }
+    .step-wrap { width: 100%; height: max-content; margin-top: auto; pointer-events: auto; }
+    
+    .step-card { 
+        width: 100%; 
+        height: auto; /* Dinámico */
+        max-height: 55vh; 
+        background: #050505; 
+        border: none; 
+        border-top: 2px solid #e5a93b; 
+        padding: 20px 20px 25px 20px; /* Sin espacios vacíos excesivos */
+        overflow-y: auto; 
+        box-shadow: 0 -10px 20px rgba(0,0,0,0.95);
+        box-sizing: border-box;
+        border-radius: 12px 12px 0 0; /* Toque estético arriba */
+    }
+    
+    /* 4. REDUCCIÓN DE TAMAÑOS DE TEXTO */
+    .step-card h2 { font-size: 1.25rem !important; margin-bottom: 8px; line-height: 1.15; }
+    .step-card p { font-size: 0.9rem !important; line-height: 1.45 }
+
+    .debutantes-box { padding: 12px; height: auto¿; }
+    .debutantes-box h3 { font-size: 1rem; margin-bottom: 8px; }
+    .debutantes-list { grid-template-columns: 1fr 1fr; gap: 6px; }
+    .deb-item { padding: 4px 6px; gap: 6px; }
+    .deb-flag { width: 18px; }
+    .deb-item span { font-size: 0.75rem; } 
+
+    /* 5. LEYENDA (Mínima Expresión: Píldoras horizontales flotantes) */
+    .bottom-legend { 
+        top: 10px; 
+        left: 10px; 
+        bottom: auto;
+        width: auto; 
+        max-width: 90vw; 
+        padding: 6px 10px; 
+        background: rgba(10,10,10,0.9); 
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+        box-sizing: border-box;
+        flex-direction: row; /* Horizontal */
+        flex-wrap: wrap;
+        gap: 8px;
+        min-height: auto;
+    }
+    .legend-title { display: none !important; } /* Ocultamos la palabra "LEYENDA" */
+    .legend-item { font-size: 10px; gap: 5px; }
+    .legend-color { width: 10px; height: 10px; min-width: 10px; margin-top: 0; }
+    .legend-item-group { width: auto; margin-bottom: 0; }
+    .legend-bar-wrapper { padding-left: 0; margin-top: 2px; }
+
+    /* 6. BOTONES DE NAVEGACIÓN FLOTANTES */
+    .nav-btn { width: 35px; height: 35px; font-size: 1rem; padding-bottom: 2px; }
+    #nav-controls { right: 10px; bottom: 56vh !important; gap: 8px; } 
+
+    /* 7. PANELES DEL MAPA (MÉXICO Y EXTINTOS) */
+    .center-panel, .side-panel { 
+        left: 50%; 
+        top: 26vh; /* Centro visual superior */
+        transform: translate(-50%, -36%); 
+        width: 95%; 
+        max-height: 70vh; 
+        overflow-y: auto; 
+        padding: 15px;
+    }
+    .mexico-img { display: none; } /* Ocultamos la foto del estadio para que los datos respiren */
+    .resultados-box { margin-top: 10px; }
+    .res-item { min-height: 40px; }
+    .res-overlay { min-height: 40px; padding: 6px 10px; font-size: 0.8rem; }
+    .res-overlay strong { font-size: 0.9rem; }
+    .panel-desc { font-size: 0.85rem; margin-bottom: 10px; }
+    
+    /* 8. MINIATURIZACIÓN ESTRICTA DE GRÁFICOS (Para encajar en el 50% de arriba) */
+    .comparison-grid, .grid-3-cols { grid-template-columns: 1fr !important; gap: 10px; }
+    .comp-bars-stage { height: 90px; }
+    .stats-massive { flex-direction: column; gap: 8px; padding: 10px; border-radius: 8px; width: 80%; }
+    .stat-divider { width: 60%; height: 1px; }
+    .stat-number { font-size: 2rem; }
+    .stat-label { font-size: 0.75rem; }
+    .waffle-container { margin-top: 20px; }
+    .waffle-caption { font-size: 0.85rem; width: 80%; }
+    #waffle-grid { grid-template-columns: repeat(20, 1fr); gap: 2px; }
+    .waffle-dot { width: 8px; height: 8px; }
+    .goals-container { padding: 12px; width: 80%; }
+    .goals-container h3 { font-size: 1.1rem; margin-bottom: 15px; }
+    .goal-row { gap: 8px; margin-bottom: 8px; }
+    .goal-country { font-size: 0.8rem; }
+    .goal-count { font-size: 0.9rem; }
+    .dashboard-grid { grid-template-columns: 1fr; gap: 10px; }
+    .pie-layout { flex-direction: column; text-align: center; gap: 10px; }
+    .pie-wrapper { width: 90px; height: 90px; }
+    .pie-center span { font-size: 1.5rem; }
+    .tg-number { font-size: 1.5rem; }
+    .t-perc { font-size: 1rem; }
+    .other-players { grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 10px; margin-top: 10px; }
+    .hero-card { height: 70px; padding: -40px; }
+    .hero-face { width: 50px; height: 50px; border-width: 2px; }
+    .hero-text h3 { font-size: 1rem; }
+    .hero-goals { font-size: 0.9rem; }
+    .p-goals { font-size: 1rem; }
+    .club6-wrapper { gap: 10px; margin-bottom: -200px; align-items: center; }
+    .full-body-img { max-height: 20vh; }
+    .club-number { font-size: 3rem; }
+    .club-text { font-size: 0.7rem; }
+    .player-info-pill { padding: 4px 8px; gap: 6px; }
+    .player-info-pill h3 { font-size: 0.7rem; }
+    .peru-hero-layout { flex-direction: row; align-items: center; gap: 10px; padding: 0 10px; }
+    .cubillas-img { max-height: 25vh; margin-bottom: 0; width: auto; object-fit: contain; }
+    #peru-goleadores-list { margin-top: -10px !important; }
+    .cards-container { 
+        padding: 15px !important; 
+        margin: -20px auto !important; 
+        width: 100% !important; 
+    }
+    .cards-container h3 { 
+        font-size: 1.1rem !important; 
+        margin-bottom: 15px !important; 
+        line-height: 1.2 !important;
+    }
+    .dual-chart-wrapper { 
+        height: 100% !important; 
+        overflow: visible !important; 
+        gap: 8px !important; 
+        padding-bottom: 0 !important;
+    }
+
+    .cards-chart { 
+        height: 180px !important; 
+        margin-bottom: 5px !important; 
+        width: 100% !important; 
+    }
 
 
-#nav-controls { right: 20px; bottom: 20px; gap: 8px; }
-    .nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+    .chart-core { 
+        min-width: 0 !important; 
+        width: 100% !important; 
+    }
+
+    .y-axis { font-size: 0.65rem !important; }
+    .x-label { 
+        font-size: 0.55rem !important; 
+        margin-bottom: -15px !important; 
+    }
+    .cards-legend { margin-top: 30px !important; }
+    .peru-poster-layout, .footer-grid { grid-template-columns: 1fr; }
+
+    /* 9. ESCENAS ESPECIALES */
+    .step.step-centered { justify-content: flex-end !important; align-items: flex-end !important; width: 100vw !important; margin-left: 0 !important; background: transparent; backdrop-filter: none; }
+    .step.step-centered .step-wrap { width: 50%; }
+    .step.step-centered .step-card { padding: 30px 20px 35px 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.9); border-radius: 12px 12px 0 0 !important; margin: auto -70px 230px !important;
+    width: 180% !important; }
+
+    /* Viz 12: Tiempos y Penales (Rediseño Carrusel Móvil) */
+    #viz-tiempos { width: 100vw !important; padding: 0 !important; justify-content: flex-start !important; }
+    #viz-tiempos .total-goals-banner { flex-direction: row !important;
+         width: 90% !important; margin: 0 auto 10px auto !important; padding: 10px 15px !important;
+          gap: 15px !important; border-radius: 8px !important; justify-content: center !important;
+        margin: 30px auto 10px auto !important; }
+    #viz-tiempos .tg-number { font-size: 2.2rem !important; margin: 0 !important; }
+    #viz-tiempos .tg-label { font-size: 0.75rem !important; text-align: left !important; }
+    #viz-tiempos .tg-asterisk { display: none !important; }
+    
+    /* El contenedor ahora es un slider horizontal con imán (Snap) */
+    #viz-tiempos .dashboard-grid { 
+    display: flex !important; 
+    flex-direction: column !important; /* MAGIA: Una debajo de otra */
+    width: 100% !important; 
+    padding: 0 15px !important; /* Un poco de respiro a los lados */
+    gap: 3px !important; 
+    overflow-x: hidden !important; /* Matamos el scroll horizontal */
+    }
+    #viz-tiempos .top-cups-list .mini-goal-row:nth-child(n+4) {
+        display: none !important;
+    }
+
+    /* Oculta la barra nativa de scroll del navegador */
+    #viz-tiempos .dashboard-grid::-webkit-scrollbar { display: none !important; }
+    
+    /* Cada mini-tarjeta se convierte en una "página" del carrusel */
+    #viz-tiempos .dash-card { 
+    position: relative !important;
+    width: 95% !important; /* Ocupan todo el ancho disponible */
+    flex: none !important; /* Le quita la memoria de "vagón de tren" */
+    padding: 10px 15px !important; 
+    border-radius: 8px !important; 
+    height: auto !important;
+    margin:0 auto !important;
+    z-index: 1;
+    }
+    #viz-tiempos .dash-card h3 { font-size: 1rem !important; margin-bottom: 15px !important; padding-bottom: 10px !important; }
+    
+    /* Oxigenamos el contenido interior porque ahora tienen espacio de sobra */
+    #viz-tiempos .time-stats { margin-bottom: 15px !important; }
+    #viz-tiempos .t-perc { font-size: 1.5rem !important; }
+    #viz-tiempos .t-label { font-size: 0.75rem !important; }
+    #viz-tiempos .timeline-chronometer { margin-top: 15px !important; }
+    #viz-tiempos .top-cups-list { gap: 10px !important; }
+    #viz-tiempos .mini-goal-row { gap: 10px !important; }
+    #viz-tiempos .mg-year { font-size: 0.85rem !important; width: 80px !important; }
+    #viz-tiempos .pie-layout { display: none !important; }
+    #viz-tiempos .pie-wrapper { width: 90px !important; height: 90px !important; }
+    #viz-tiempos .pie-center span { font-size: 1.5rem !important; }
+    #viz-tiempos .pie-info p { display: none !important; }
+    #viz-tiempos .pie-legend-box { flex-direction: column !important; gap: 8px !important; justify-content: center !important; }
+    #viz-tiempos .p-leg-item { font-size: 0.85rem !important; }
+
+    /* =======================================
+       Viz 16: Más Partidos (Encaje de 5 Gráficos)
+       ======================================= */
+       
+    /* 1. Reducimos el Título Flotante para que no estorbe */
+    #sticky-records-title {
+        top: 5px !important;
+        font-size: 1rem !important;
+        line-height: 1.1 !important;
+        margin: 20px 0 0 0 !important;
+    }
+
+    /* 2. Contenedor principal: Comprimimos el padding interno al límite */
+    #viz-mas-partidos .mas-partidos-container {
+        padding: 10px 8px !important;
+        width: 100% !important;
+        height: auto !important; /* Déjalo fluir automáticamente */
+    }
+    
+    /* 1. Mantenemos oculto el título interno */
+    #viz-mas-partidos .mas-partidos-container > h3 {
+        display: none !important;
+    }
+
+    /* 2. Rescatamos el texto del asterisco en tamaño micro */
+    #viz-mas-partidos .footnote {
+        display: block !important;
+        font-size: 0.55rem !important; /* Tamaño microscópico pero legible */
+        line-height: 1.2 !important;
+        margin-top: 8px !important;
+        padding-top: 5px !important;
+        border-top: 1px solid rgba(255,255,255,0.1) !important;
+    }
+
+    /* 3. Comprimimos los márgenes entre las dos filas de gráficos */
+    #viz-mas-partidos .comparison-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; 
+        gap: 10px !important;
+        margin-bottom: 5px !important; /* Rescatamos 5px aquí */
+    }
+    #viz-mas-partidos .grid-3-cols {
+        grid-template-columns: 1fr 1fr 1fr !important; 
+        gap: 5px !important;
+        padding-top: 5px !important; /* Rescatamos otros 5px aquí */
+    }
+
+    /* 4. LA MAGIA: Barras más altas y gruesas */
+    #viz-mas-partidos .comp-col h4 {
+        font-size: 0.65rem !important; 
+        margin-bottom: 5px !important;
+        padding-bottom: 2px !important;
+        line-height: 1.1 !important;
+        white-space: nowrap !important; 
+    }
+    #viz-mas-partidos .comp-bars-stage {
+        height: 110px !important; /* ¡Le damos 40px MÁS de altura a las barras! */
+        gap: 8px !important;
+    }
+    #viz-mas-partidos .comp-bar {
+        width: 25px !important; /* Engordamos un poquito la barra para que se vea imponente */
+    }
+    #viz-mas-partidos .comp-val {
+        font-size: 1.15rem !important; 
+        margin-top: 2px !important;
+    }
+    #viz-mas-partidos .comp-label {
+        font-size: 0.5rem !important; 
+    }
+
 }

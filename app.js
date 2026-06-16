@@ -244,15 +244,14 @@ const CONFIG = {
 
     },
     camaras: {
-        1: { centro: esMovil ? [20, 0] : [30, 10], zoom: esMovil ? 1.0 : 2.1 },
-        2: { centro: esMovil ? [20, 0] : [30, 10], zoom: esMovil ? 1.0 : 2 },
-        3: { centro: esMovil ? [20, 0] : [35, 20], zoom: esMovil ? 1.2 : 2.2 },
-        4: { centro: esMovil ? [20, 0] : [30, 10], zoom: esMovil ? 1.2 : 2.1 },
-        5: { centro: esMovil ? [45, 15] : [50, 20], zoom: esMovil ? 1.5 : 2.8 },
-        6: { centro: esMovil ? [20, 0] : [30, 15], zoom: esMovil ? 1.0 : 2.1 },
-        7: { centro: esMovil ? [20, 0] : [30, 10], zoom: esMovil ? 1.0 : 2.3 },
-        8: { centro: esMovil ? [20, 20] : [18, -102], zoom: esMovil ? 2.5 : 5.5 }
-        
+        1: { centro: esMovil ? [25, 0] : [30, 10], zoom: esMovil ? 1 : 2.1 },
+        2: { centro: esMovil ? [25, 0] : [30, 10], zoom: esMovil ? 1 : 2 },
+        3: { centro: esMovil ? [25, 0] : [35, 20], zoom: esMovil ? 1 : 2.2 },
+        4: { centro: esMovil ? [25, 0] : [30, 10], zoom: esMovil ? 1 : 2.1 },
+        5: { centro: esMovil ? [25, 0] : [50, 20], zoom: esMovil ? 1 : 2.8 },
+        6: { centro: esMovil ? [25, 0] : [30, 15], zoom: esMovil ? 1 : 2.1 },
+        7: { centro: esMovil ? [25, 0] : [30, 10], zoom: esMovil ? 1 : 2.3 },
+        8: { centro: esMovil ? [25, 0] : [18, -102], zoom: esMovil ? 1 : 5.5 }
     }
 };
 
@@ -260,8 +259,9 @@ const CONFIG = {
 // 3. INICIALIZACIÓN LEAFLET 
 // ===============================================
 const map = L.map('map', {
-    zoomControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, touchZoom: false
+    zoomControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, touchZoom: false, attributionControl: false
 }).setView(CONFIG.camaras[1].centro, CONFIG.camaras[1].zoom);
+
 
 let geoJsonLayer;
 let capaBanderas = L.layerGroup().addTo(map);
@@ -300,22 +300,24 @@ function configurarHover(feature, layer) {
 
     //layer.bindTooltip(tooltipHTML, { sticky: true, className: 'custom-tooltip' });
     
-    layer.on({
-        mouseover: (e) => { 
-            e.target.setStyle({ weight: 2, color: '#ffffff' });
-            if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-                layer.bringToFront();
+    if (!esMovil) {
+        layer.on({
+            mouseover: (e) => { 
+                e.target.setStyle({ weight: 2, color: '#ffffff' });
+                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                    layer.bringToFront();
+                }
+            },
+            mouseout: (e) => { 
+                // Restaura el borde pero respeta el neón si estaba activo
+                const esNeon = e.target.options.className === 'pais-neon';
+                e.target.setStyle({ 
+                    weight: esNeon ? 1.5 : 0.9, 
+                    color: esNeon ? e.target.options.fillColor : CONFIG.colores.borde 
+                }); 
             }
-        },
-        mouseout: (e) => { 
-            // Restaura el borde pero respeta el neón si estaba activo
-            const esNeon = e.target.options.className === 'pais-neon';
-            e.target.setStyle({ 
-                weight: esNeon ? 1.5 : 0.9, 
-                color: esNeon ? e.target.options.fillColor : CONFIG.colores.borde 
-            }); 
-        }
-    });
+        });
+    }
 }
 
 document.getElementById('btn-comenzar').addEventListener('click', () => {
@@ -341,8 +343,17 @@ const cooldownTiempo = 1000; // 1 segundo de seguridad para no saltar escenas po
 function ejecutarSalto(elementoDestino) {
     if (elementoDestino) {
         isScrolling = true;
-        elementoDestino.scrollIntoView({ behavior: 'smooth' });
-        setTimeout(() => { isScrolling = false; }, cooldownTiempo);
+        if (esMovil) {
+            // MÓVIL: Transición "Fade In/Fade Out" anulando el deslizamiento
+            gsap.to(document.querySelectorAll('.step-wrap'), { opacity: 0, duration: 0.2, overwrite: true, onComplete: () => {
+                elementoDestino.scrollIntoView({ behavior: 'auto' }); // Salto instantáneo
+                setTimeout(() => { isScrolling = false; }, 800);
+            }});
+        } else {
+            // ESCRITORIO: Deslizamiento suave clásico
+            elementoDestino.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => { isScrolling = false; }, cooldownTiempo);
+        }
     }
 }
 
@@ -353,8 +364,11 @@ function moverEscena(direccion) {
     const scrollAlFondo = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50;
 
     if (direccion === 'abajo') {
+        let nextPaso = pasoActualGlobal + 1;
+        if (esMovil && nextPaso === 7) nextPaso = 8; // MÓVIL: Oculta la escena 7 saltando directo a la 8
+        
         if (pasoActualGlobal < 19) {
-            ejecutarSalto(document.querySelector(`.step[data-step="${pasoActualGlobal + 1}"]`));
+            ejecutarSalto(document.querySelector(`.step[data-step="${nextPaso}"]`));
         } else if (pasoActualGlobal === 19 && !scrollAlFondo) {
             isScrolling = true;
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -362,10 +376,13 @@ function moverEscena(direccion) {
         }
     } 
     else if (direccion === 'arriba') {
+        let prevPaso = pasoActualGlobal - 1;
+        if (esMovil && prevPaso === 7) prevPaso = 6; // MÓVIL: Salta de la 8 a la 6 de retroceso
+        
         if (scrollAlFondo) {
             ejecutarSalto(document.querySelector('.step[data-step="19"]'));
         } else if (pasoActualGlobal > 1) {
-            ejecutarSalto(document.querySelector(`.step[data-step="${pasoActualGlobal - 1}"]`));
+            ejecutarSalto(document.querySelector(`.step[data-step="${prevPaso}"]`));
         }
     }
 }
@@ -412,7 +429,8 @@ window.addEventListener('touchmove', (e) => {
 // NUEVA FUNCIÓN PARA LOS PINES DE CIUDADES (Dualidad Histórica vs Nueva)
 function gestionarPines(paso) {
     capaPines.clearLayers();
-    
+    if (esMovil && paso === 7) return; // Bloquea los pines de ciudades en móvil
+
     if (paso === 7) {
         // 1. Dibuja primero las históricas (Quedan de fondo)
         DATA.ciudades_historicas.forEach(c => {
@@ -463,6 +481,7 @@ generarWaffleChart();
 
 function gestionarBanderas(paso) {
     capaBanderas.clearLayers();
+    if (esMovil) return; // Bloquea las banderas en móvil
     
     // Banderas para el Paso 1 (Todos los 19 anfitriones)
     if (paso === 1) {
@@ -694,17 +713,27 @@ function procesarPasoNarrativo(paso) {
     if(paso === 19) gsap.fromTo(".gol-peru-bar", { width: "0%" }, { width: (i, t) => t.getAttribute("data-width") + "%", duration: 1.2, ease: "power3.out", stagger: 0.1 });
     else gsap.set(".gol-peru-bar", { width: "0%" });
 
-    // ============================================
-    // CONTROL DE MAPA Y VECTORES (Solo si el mapa es visible)
+    
+   // CONTROL DE MAPA Y VECTORES (Solo si el mapa es visible)
     // ============================================
     
     // OPTIMIZACIÓN DE RENDIMIENTO
     if (!ocultarMapa) {
-        
         if (CONFIG.camaras[paso]) {
-            map.flyTo(CONFIG.camaras[paso].centro, CONFIG.camaras[paso].zoom, {
-                duration: 1.5, easeLinearity: 0.25
-            });
+            if (esMovil) {
+                // MÓVIL: Transición Fade In/Out limpia
+                gsap.killTweensOf('#map'); // <-- Seguro anti-atascos al hacer scroll rápido
+                
+                gsap.to('#map', { opacity: 0, duration: 0.25, onComplete: () => {
+                    map.setView(CONFIG.camaras[paso].centro, CONFIG.camaras[paso].zoom);
+                    gsap.to('#map', { opacity: 1, duration: 0.35 });
+                }});
+            } else {
+                // ESCRITORIO: Vuelo suave tradicional
+                map.flyTo(CONFIG.camaras[paso].centro, CONFIG.camaras[paso].zoom, {
+                    duration: 1.5, easeLinearity: 0.25
+                });
+            }
         }
 
         geoJsonLayer.eachLayer(layer => {
@@ -773,8 +802,6 @@ function procesarPasoNarrativo(paso) {
         });
     }
 }
-
-
 
 
 // ===============================================
