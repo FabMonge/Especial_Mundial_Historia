@@ -198,9 +198,7 @@ const DATA = {
 };
 
 const CONFIG = {
-    // Si ya descargaste el mapa de alta resolución, déjalo como "custom.geo.json". 
-    // Si no, puedes usar este enlace directo: "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson"
-    geojsonUrl: "custom.geo.json",
+    geojsonUrl: "https://fabmonge.github.io/Especial_Mundial_Historia/custom.geo.json",
     colores: {
         vacio: "#151515",      
         base: "#222222",       
